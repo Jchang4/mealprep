@@ -1,0 +1,10 @@
+.PagingButtons {
+  max-width: 700px;
+  margin: 1rem auto 4rem auto;
+}
+
+.PagingButtons_arrow {
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,7 @@
+.SearchRecipes_container {
+  width: 100%; }
+
+.SearchRecipes {
+  width: 95%;
+  max-width: 600px;
+  margin: 1rem auto; }

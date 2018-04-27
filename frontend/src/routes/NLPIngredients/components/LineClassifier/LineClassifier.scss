@@ -1,0 +1,37 @@
+.LineClassifier {
+  margin-top: 2rem;
+  transition: margin-right 175ms ease-out;
+  &:active,
+  &:focus,
+  &:hover {
+    margin-right: calc(-1rem - 50px);
+  }
+
+  &:active .LineClassifier_delete,
+  &:focus .LineClassifier_delete,
+  &:hover .LineClassifier_delete {
+    cursor: pointer;
+    width: 50px;
+    margin-left: 1rem;
+  }
+}
+
+.LineClassifier_delete {
+  width: 0;
+  transition: width 175ms ease-out,
+              margin-left 175ms ease-out;
+}
+
+
+
+
+.LineClassifier_hl {
+  margin: 0.25rem 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  &:hover {
+    cursor: pointer;
+    background: red;
+    color: white;
+  }
+}

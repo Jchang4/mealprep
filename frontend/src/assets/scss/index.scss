@@ -1,0 +1,9 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/utilities.scss';
+
+html, body {
+  background-color: $WHITE;
+  color: $BLACK;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-size: 16px;
+}

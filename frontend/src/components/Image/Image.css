@@ -1,0 +1,14 @@
+.Image {
+  display: block;
+  position: relative;
+  overflow: hidden; }
+  .Image .aspectRatio {
+    width: 100%;
+    position: absolute;
+    padding-top: calc(100% * 3/4); }
+
+.Image_img {
+  width: 100%;
+  height: auto;
+  background-position: center center;
+  background-size: cover; }

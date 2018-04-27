@@ -1,0 +1,9 @@
+.RecipePicker {
+  max-width: 1400px;
+  margin: 0 auto; }
+
+.RecipePicker_cardContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; }

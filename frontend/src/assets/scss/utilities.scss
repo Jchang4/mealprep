@@ -1,0 +1,49 @@
+@import 'assets/scss/colors.scss';
+
+// Positioning
+.position-absolute { position: absolute; }
+.position-absolute-full {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+// Flex
+.flex-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap; }
+
+
+// Font Utils
+.text-center { text-align: center; }
+
+
+// Page Utils
+.page--indent { padding-left: 2rem; }
+
+
+.round-corners {
+  border-radius: 0.15rem;
+  overflow: hidden; }
+
+.hover {
+  box-shadow: 0px 1px 0.2rem $GREY;
+  transition: box-shadow 200ms ease-out;
+
+  &:active,
+  &:focus,
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 3px 1.25rem $DARK_GREY; }
+}
+
+
+// Card Effects
+.card { margin: 1rem; }
+.card--success {
+  border: 0.3rem solid #4CAF50;
+  margin: calc(1rem - 0.3rem);
+}

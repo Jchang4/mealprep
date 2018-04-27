@@ -1,0 +1,59 @@
+.RecipeCard {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+
+  &:hover .RecipeCard_top_btn {
+    right: 0%;
+  }
+}
+
+
+.RecipeCard_img {
+  width: 100%;
+  padding-top: calc(100% * 3/4);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// Text
+.RecipeCard_textContainer {
+  overflow: hidden;
+  padding: 1rem 1rem 0.5rem 1rem;
+  height: 5rem;
+}
+.RecipeCard_header {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+.RecipeCard_subheader {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+
+// Buttons
+.RecipeCard_top_btn {
+  position: absolute;
+  top: 0;
+  right: -25%;
+  transition: right 175ms ease-out;
+}
+.RecipeCard_top_btn--success {
+  right: 0 !important;
+}
+
+
+@media (min-width: 600px) {
+  .RecipeCard {
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 900px) {
+  .RecipeCard {
+    max-width: 400px;
+  }
+}

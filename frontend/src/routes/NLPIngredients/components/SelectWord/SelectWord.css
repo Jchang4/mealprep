@@ -1,0 +1,5 @@
+.SelectWord {
+  font-size: 1.65rem;
+  padding: 0.5rem; }
+  .SelectWord:active, .SelectWord:focus, .SelectWord:hover {
+    cursor: pointer; }
