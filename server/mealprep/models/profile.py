@@ -1,20 +1,16 @@
-from mealprep.models.libs.BaseTable import BaseTable
+from mealprep.models.database import db
+from mealprep.models.helpers import table_to_dict
 
-class Profile(BaseTable):
+class Profile(db.Model):
     __tablename__ = 'profile'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    first_name = db.Column(db.String(128))
+    first_name = db.Column(db.String(128), nullable=False)
     last_name = db.Column(db.String(128))
-    brand_new = db.Column(db.String(25))
+    email = db.Column(db.String(120), nullable=False)
 
-    def __init__(self, first_name, brand_new):
+    def __init__(self, first_name, email):
         self.first_name = first_name
-        self.brand_new = brand_new
+        self.email = email
 
-    # def to_dict(self):
-    #     return {
-    #         'id': self.id,
-    #         'first_name': self.first_name,
-    #         'last_name': self.last_name,
-    #         'brand_new': self.brand_new,
-    #     }
+    def to_dict(self):
+        return table_to_dict(self)
