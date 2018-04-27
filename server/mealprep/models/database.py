@@ -9,6 +9,3 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://justin:guitar1@localhost:5
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-# Models
-from mealprep.models.profile import Profile
