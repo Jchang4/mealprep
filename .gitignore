@@ -4,3 +4,4 @@
 server/tmp
 server/temp
 server/env
+server/**/*__pycache__
