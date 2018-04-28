@@ -1,5 +1,5 @@
 import requests
-from config import NLP_SERVICE_URL
+from config.env import NLP_SERVICE_URL
 
 
 def classify_all_ingredients(ingredients):

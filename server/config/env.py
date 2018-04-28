@@ -14,5 +14,5 @@ if not NLP_SERVICE_URL:
     raise Exception('Need to provide NLP_SERVICE_URL.')
 
 
-print('POSTGRES_URI:', POSTGRES_URI)
-print('NLP_SERVICE_URL:', NLP_SERVICE_URL)
+# print('POSTGRES_URI:', POSTGRES_URI)
+# print('NLP_SERVICE_URL:', NLP_SERVICE_URL)
