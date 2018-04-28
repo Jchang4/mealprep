@@ -15,7 +15,7 @@ import {
 // Redux
 const mapStateToProps = (state) => {
   return {
-    recipes: state.recipes,
+    ingredients: state.nlp,
   };
 }
 

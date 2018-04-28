@@ -15,7 +15,8 @@ const defaultProps = {
   onLabelSelect: () => {},
 };
 
-
+// Keycodes from 1-9
+// Reference: https://css-tricks.com/snippets/javascript/javascript-keycodes/
 const KEYCODE_MAP = [49, 50, 51, 52, 53, 54, 55, 56, 57];
 
 class LabelSelector extends Component {
@@ -26,28 +27,31 @@ class LabelSelector extends Component {
     this.addAllEventListeners();
   }
 
-  // componentWillUnmount() {
-  //   const { onLabelSelect } = this.props;
-  //   this.labelEls.forEach((label, i) => {
-  //     document.removeEventListener('keydown', onLabelSelect.bind(label.name, label.color))
-  //   });
-  // }
+  componentWillUnmount() {
+    this.labelEls.forEach((label, i) => {
+      document.removeEventListener('keypress', this.addEventListener(label, i), false);
+    });
+  }
 
   /* Add button listeners to each label option
   * Keys are assigned in order, 1-9
   */
   addAllEventListeners() {
-    console.log(this.labelEls);
     this.labelEls.forEach((label, i) => {
-      document.addEventListener('keypress', (e) => this.addEventListener(label, i, e), false);
+      document.addEventListener('keypress', this.addEventListener(label, i), false);
     });
   }
 
-  addEventListener(label, idx, e) {
+  addEventListener(label, idx) {
     const { onLabelSelect } = this.props;
-    if (e.keyCode === KEYCODE_MAP[idx]) {
-      onLabelSelect(label.name, label.color);
+
+    function eventHandler(e) {
+      if (e.keyCode === KEYCODE_MAP[idx]) {
+        onLabelSelect(label.name, label.color);
+      }
     }
+
+    return eventHandler;
   }
 
   render() {
