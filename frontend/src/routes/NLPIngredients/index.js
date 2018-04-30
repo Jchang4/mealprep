@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 
 // Actions
 import {
-  addRecipe,
-  addRecipeDetails,
+  getRecipes,
 } from '../../redux/recipes/actions';
 import {
   preClassifyIngredients,
+  removeIngredient,
 } from '../../redux/nlp/actions';
 
 // Redux
@@ -21,10 +21,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    addRecipe,
-    addRecipeDetails,
+    getRecipes,
     // NLP
     preClassifyIngredients,
+    removeIngredient,
   }, dispatch);
 }
 

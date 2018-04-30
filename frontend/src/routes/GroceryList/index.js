@@ -6,21 +6,21 @@ import { bindActionCreators } from 'redux';
 // Actions
 import {
   addRecipe,
-  addRecipeDetails,
+  getRecipeDetails,
 } from '../../redux/recipes/actions';
 
 // Redux
 const mapStateToProps = (state) => {
   return {
     recipes: state.recipes.allRecipes,
-    planner: state.recipes.planner,
+    planner: state.recipesOther.planner,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     addRecipe,
-    addRecipeDetails,
+    getRecipeDetails,
   }, dispatch);
 }
 

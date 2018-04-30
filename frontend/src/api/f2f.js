@@ -6,14 +6,13 @@ export function getAllRecipes(ingredients, page=1, sort='r') {
 
   return callAPI({
     method: 'POST',
-    url: '/f2f/search',
+    url: '/recipe',
     data: {
       query,
       sort,
       page,
     }
   })
-  .then(res => res.data)
   .catch(err => {
     console.log('Failed to get all recipes.');
     console.log(err);
@@ -24,7 +23,7 @@ export function getAllRecipes(ingredients, page=1, sort='r') {
 export function getRecipe(recipeId) {
   return callAPI({
     method: 'GET',
-    url: '/f2f/recipe/' + recipeId,
+    url: '/recipe/' + recipeId,
   })
   .then(res => res.data)
   .catch(err => {

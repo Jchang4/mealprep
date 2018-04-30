@@ -37,14 +37,20 @@ export function getRecipes(query) {
     .then(recipes => {
       dispatch({
         type: ADD_N_RECIPES,
-        payload: recipes
+        payload: recipes.data,
       });
+      
+      return recipes;
+    })
+    .catch(err => {
+      console.log('Failed to get all recipes from API.');
+      console.log(err);
     });
   }
 }
 
 // Get recipe details - i.e. ingredients
-export function addRecipeDetails(recipeId) {
+export function getRecipeDetails(recipeId) {
   return (dispatch, getState) => {
     return getRecipe(recipeId)
     .then(recipe => {

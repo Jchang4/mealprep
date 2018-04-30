@@ -15,7 +15,7 @@ import LineClassifier from './components/LineClassifier';
 
 const propTypes = {
   addRecipe: PropTypes.func.isRequired,
-  addRecipeDetails: PropTypes.func.isRequired,
+  getRecipeDetails: PropTypes.func.isRequired,
 };
 const defaultProps = {};
 
@@ -67,7 +67,7 @@ class NLPIngredients extends Component {
   ingredientToWords(ingr) {
     let unique = '$%$'
     // Use split,join to replace parentheses
-    // And regex to separate it out - lets us keep the parenths as "words"
+    // and regex to separate it out - lets us keep the parenths as "words"
     let words = ingr.split('(').join('('+unique);
     words = words.split(')').join(unique+')');
     words = words.split(/\s+|[,!?]+|\$%\$/).filter(Boolean);
@@ -215,8 +215,6 @@ class NLPIngredients extends Component {
 
   handleSearchClick(query) {
     // Ex query: chicken,pasta, oregeno
-    // Turn query into an array
-    // spaces, symbols, symbols+spaces
     let q = this.ingredientToWords(query);
     let page = this.getRandNum(1,4); // get random page for variety
     console.log('query:', q);
