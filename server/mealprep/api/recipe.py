@@ -2,7 +2,7 @@ import mealprep.food_services.food2fork as Food2Fork
 from flask import request, jsonify
 from flask_restful import Resource
 
-class SearchRecipeAPI(Resource):
+class GetRecipesApi(Resource):
     def post(self):
         data = request.get_json(force=True, silent=True) or {}
         query = data.get('query')
@@ -14,7 +14,8 @@ class SearchRecipeAPI(Resource):
             recipes['recipes'].sort(key=lambda r: r['social_rank'], reverse=True) # Descending
             return jsonify({
                 'status': 200,
-                'data': recipes,
+                'count': recipes['count'],
+                'data': recipes['recipes'],
             })
         else:
             return jsonify({
@@ -23,12 +24,20 @@ class SearchRecipeAPI(Resource):
             })
 
 
-class RecipeAPI(Resource):
+class GetRecipeByIdApi(Resource):
     def get(self, recipe_id):
+        r = Food2Fork.get_recipe(recipe_id)
+        if r:
+            return jsonify({
+                'status': 200,
+                'data': r['recipe'],
+            })
+
         return jsonify({
-            'status': 200,
-            'data': Food2Fork.get_recipe(recipe_id),
+            'status': 400,
+            'error': 'Could not find ',
         })
+
 
 
 
