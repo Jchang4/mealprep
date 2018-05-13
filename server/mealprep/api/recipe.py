@@ -6,17 +6,23 @@ class GetRecipesApi(Resource):
     def post(self):
         data = request.get_json(force=True, silent=True) or {}
         query = data.get('query')
-        sort = data.get('sort')
-        page = data.get('page')
+        sort = data.get('sort') or 'r'
+        page = data.get('page') or '1'
 
         if query:
-            recipes = Food2Fork.search(query, sort=sort, page=page)
-            recipes['recipes'].sort(key=lambda r: r['social_rank'], reverse=True) # Descending
-            return jsonify({
-                'status': 200,
-                'count': recipes['count'],
-                'data': recipes['recipes'],
-            })
+            try:
+                recipes = Food2Fork.search(query, sort=sort, page=page)
+                recipes['recipes'].sort(key=lambda r: r['social_rank'], reverse=True) # Descending
+                return jsonify({
+                    'status': 200,
+                    'count': recipes['count'],
+                    'data': recipes['recipes'],
+                })
+            except:
+                return jsonify({
+                    'status': 500,
+                    'error': 'May day, may day! Food2Fork is down!',
+                })
         else:
             return jsonify({
                 'status': 400,
@@ -37,11 +43,3 @@ class GetRecipeByIdApi(Resource):
             'status': 400,
             'error': 'Could not find ',
         })
-
-
-
-
-def has_required_data_search(data):
-    if data.get('query'):
-        return True
-    return False

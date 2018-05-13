@@ -23,7 +23,7 @@ import mealprep.food_services.food2fork as F2F
 from mealprep.api.helpers import classify_all_ingredients
 from mealprep.unitconverter import convert_unit
 
-class CombineIngredientsAPI(Resource):
+class CombineIngredientsApi(Resource):
     def post(self):
         """ Get recipes by id and combine like ingredients """
         data = request.get_json(silent=True) or {}

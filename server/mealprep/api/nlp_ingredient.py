@@ -5,16 +5,18 @@ from mealprep.api.helpers import classify_all_ingredients
 from mealprep.models import db, NLPIngredient
 
 
-class NLPIngredientAPI(Resource):
+class NLPIngredientApi(Resource):
     def post(self):
-        data = request.get_json(force=True, silent=True) or {}
+        req_data = request.get_json(force=True, silent=True) or {}
 
-        try:
-            new_ingredient = NLPIngredient(original=(data.get('original') or None),
-                                        name=(data.get('name') or None),
-                                        quantity=(data.get('quantity') or None),
-                                        unit=(data.get('unit') or None),
-                                        comment=(data.get('comment') or None))
+        if self.has_required_data(req_data):
+            new_ingredient = NLPIngredient(original=(req_data['original'] or None),
+                                        name=(req_data['name'] or None),
+                                        quantity=(float(req_data.get('quantity'))\
+                                            if req_data.get('quantity')\
+                                            else None),
+                                        unit=(req_data.get('unit') or None),
+                                        comment=(req_data.get('comment') or None))
 
             # Add and save to database
             db.session.add(new_ingredient)
@@ -24,28 +26,26 @@ class NLPIngredientAPI(Resource):
                 'status': 200,
                 'data': new_ingredient.to_dict(),
             })
-        except Exception as e:
-            print(e)
-
-            if not self.has_required_data(data):
-                return jsonify({
-                    'status': 400,
-                    'error': 'Bad request. Missing parameters.',
-                })
-
+        else:
             return jsonify({
-                'status': 500,
-                'error': 'Server error. Something went wrong. Cannot add nlp ingredient to database.',
+                'status': 400,
+                'error': 'Bad request. Missing required parameters or bad parameters.',
             })
 
-    @staticmethod
-    def has_required_data(data):
-        if data.get('original') and data.get('name'):
-            return True
-        return False
+
+    def has_required_data(self, data):
+        if not data.get('original') or not data.get('name'):
+            return False
+        if data.get('quantity'): # Ensure quantity can be a float
+            quant = data['quantity']
+            try:
+                float(quant)
+            except:
+                return False
+        return True
 
 
-class ClassifyIngredientAPI(Resource):
+class ClassifyIngredientApi(Resource):
     def post(self):
         data = request.get_json(force=True, silent=True) or {}
         if data.get('ingredients'):
