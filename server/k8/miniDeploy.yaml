@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: v1
+    run: mealprep-api
+  name: mealprep-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mealprep-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: mealprep-api
+    spec:
+      containers:
+      - name: mealprep-api
+        image: mealprep-api:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_URI
+            value: "postgresql://justin:guitar1@10.0.2.2:5432/mealprep"
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        command: ["python","run.py"]
