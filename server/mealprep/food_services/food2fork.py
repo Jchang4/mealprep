@@ -27,8 +27,12 @@ def get_recipe(recipeId):
         'key': API_KEY,
         'rId': recipeId
     }
-    r = requests.get(GET_URL, params=params)
-    return r.json()
+    res = requests.get(GET_URL, params=params)
+    res = res.json()
+    if res and res.get('recipe'):
+        return res['recipe']
+
+    return False
 
 def get_sort(user_input):
     """ Change user_inputted sort parameter to 't' or 'r' """
