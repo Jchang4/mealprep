@@ -4,7 +4,7 @@
     the original lines & comments into an array
 
     Example:
-        RequestBody: { recipes: [id1, id2 ... idN] }
+        RequestBody: { recipes: [id1, id2 ... ] }
         Response: {
             ingredients: [
                 {
@@ -18,30 +18,24 @@
 """
 from flask import request, jsonify
 from flask_restful import Resource
-import requests
 import mealprep.food_services.food2fork as F2F
-from mealprep.api.helpers import classify_all_ingredients
+from .helpers.ingredients import classify_all_ingredients
+from .helpers.responses import GenericSuccessResponse, BadRequest
 from mealprep.unitconverter import convert_unit
 
 class CombineIngredientsApi(Resource):
     def post(self):
         """ Get recipes by id and combine like ingredients """
-        data = request.get_json(silent=True) or {}
+        data = request.get_json(force=True, silent=True) or {}
         recipe_ids = data.get('recipeIds') or []
 
         if recipe_ids and len(recipe_ids) > 0:
             ingredients = self.get_all_ingredients(recipe_ids)
             classified_ingredients = classify_all_ingredients(ingredients)
             combined_ingredients = self.combine_classified_ingredients(classified_ingredients)
-            return jsonify({
-                'status': 200,
-                'ingredients': combined_ingredients,
-            })
-
-        return jsonify({
-            'status': 400,
-            'error': 'Bad Request. You did not supply any recipe ids.',
-        })
+            return GenericSuccessResponse(ingredients=combined_ingredients)
+        else:
+            return BadRequest('You did not supply any recipe ids.')
 
     def get_all_ingredients(self, recipe_ids):
         """ Get recipes by id and grab their ingredients.
@@ -51,8 +45,8 @@ class CombineIngredientsApi(Resource):
 
         for rId in recipe_ids:
             r = F2F.get_recipe(rId)
-            if r.get('recipe').get('ingredients'):
-                ingredients += r['recipe']['ingredients']
+            if r and r.get('ingredients'):
+                ingredients += r['ingredients']
 
         for idx,ingr in enumerate(ingredients):
             ingredients[idx] = ingr.strip()

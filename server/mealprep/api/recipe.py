@@ -1,4 +1,3 @@
-from flask import request, jsonify
 from flask_restful import Resource
 from mealprep.mealprep import app
 import mealprep.food_services.food2fork as Food2Fork
