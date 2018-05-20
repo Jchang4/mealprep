@@ -1,13 +1,14 @@
+from config.env import POSTGRES_URI
 
 class Config(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://justin:guitar1@localhost:5432/mealprep'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = POSTGRES_URI
+    SQLALCHEMY_TRACK_MODIFICATIONS = False # remove annoying logs
 
 class ProductionConfig(Config):
     ENV = 'production'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://justin:letsdoit1@localhost:5433/mealprep'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://localdev:Assword@localhost:5433/mealprep'
 
 class DevelopmentConfig(Config):
     ENV = 'development'

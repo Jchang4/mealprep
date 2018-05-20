@@ -16,14 +16,14 @@ if not NLP_SERVICE_URL:
     k8_port = os.getenv('MEALPREP_NLP_SERVICE_PORT')
     if k8_host and k8_port:
         k8_url = k8_host + ':' + k8_port
-        NLP_SERVICE_URL = k8_url
+        NLP_SERVICE_URL = 'http://' + k8_url
     else:
         raise ValueError('Must provide NLP_SERVICE_URL.')
 
 
 # Helper function
 def log_env():
-    print('\n' + ('-' * 35))
+    print('\n' + ('-' * 70))
     print('Postgres URI:   ', POSTGRES_URI)
     print('NLP Service URL:', NLP_SERVICE_URL)
-    print(('-' * 35) + '\n')
+    print(('-' * 70) + '\n')

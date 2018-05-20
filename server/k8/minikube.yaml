@@ -1,3 +1,23 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: mealprep-api
+  name: mealprep-api
+  namespace: default
+spec:
+  ports:
+  - nodePort: 30026
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: mealprep-api
+  type: NodePort
+
+---
+# Deployment
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -27,8 +47,8 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
           - name: POSTGRES_URI
-            value: "postgresql://justin:guitar1@10.0.2.2:5432/mealprep"
+            value: "postgresql://localdev:Assword@10.0.2.2:5432/mealprep"
         ports:
         - containerPort: 8080
           protocol: TCP
-        command: ["python","run.py"]
+        command: ["python", "-u", "run.py"]
