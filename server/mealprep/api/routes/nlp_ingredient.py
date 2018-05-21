@@ -1,9 +1,9 @@
 from flask import request
 from flask_restful import Resource
 from mealprep.mealprep import app
-from .helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequest, ServerError
-from .helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
-from .helpers.general import can_be_float
+from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequest, ServerError
+from ..helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
+from ..helpers.general import can_be_float
 
 
 class NLPIngredientApi(Resource):

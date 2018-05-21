@@ -4,9 +4,9 @@ from mealprep.mealprep import app
 api = Api(app)
 
 # Api Endpoints
-from .nlp_ingredient import NLPIngredientApi, ClassifyIngredientApi
-from .recipe import GetRecipesApi, GetRecipeByIdApi
-from .combine_ingredients import CombineIngredientsApi
+from .routes.nlp_ingredient import NLPIngredientApi, ClassifyIngredientApi
+from .routes.recipe import GetRecipesApi, GetRecipeByIdApi
+from .routes.combine_ingredients import CombineIngredientsApi
 
 # Initialize Endpoints
 api.add_resource(NLPIngredientApi, '/nlp')

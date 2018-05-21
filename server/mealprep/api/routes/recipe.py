@@ -1,7 +1,8 @@
+from flask import request
 from flask_restful import Resource
 from mealprep.mealprep import app
 import mealprep.food_services.food2fork as Food2Fork
-from .helpers.responses import GenericSuccessResponse, BadRequest, NotFound, ServerError
+from ..helpers.responses import GenericSuccessResponse, BadRequest, NotFound, ServerError
 
 class GetRecipesApi(Resource):
     def post(self):
