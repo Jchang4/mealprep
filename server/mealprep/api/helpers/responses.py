@@ -24,14 +24,14 @@ def CreatedNewItemResponse():
 
 # Errors
 # ------------------
-def NotFound(message, **kwargs):
+def NotFoundResponse(message, **kwargs):
     """ Return 404 error with message and data (optional) """
     return create_request(404, message, kwargs)
 
-def BadRequest(message, **kwargs):
+def BadRequestResponse(message, **kwargs):
     """ Return 400 error with message and data (optional) """
     return create_request(400, message, kwargs)
 
-def ServerError(message, **kwargs):
+def ServerErrorResponse(message, **kwargs):
     """ Return 500 error with message and data (optional) """
     return create_request(400, message, kwargs)
