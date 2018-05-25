@@ -53,7 +53,14 @@ def classify_all_ingredients(ingredients):
             }
     """
     r = requests.post(NLP_SERVICE_URL, json={'ingredients': ingredients})
-    r = r.json().get('data')
+    r = (r.json() or {}).get('data')
+    return r
+
+def combine_ingredients(ingredients):
+    """ Turn a list of ingredients into combined, classified ingredients """
+    url = NLP_SERVICE_URL + '/combine'
+    r = requests.post(url, json={'ingredients': ingredients})
+    r = (r.json() or {}).get('ingredients')
     return r
 
 

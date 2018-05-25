@@ -57,15 +57,23 @@ def combine_ingredients_handler():
 
     # Handle Bad Request
     if not ingredients or type(ingredients) is not list:
+        app.logger.info('Bad request: "ingredients" is incorrect.')
         return jsonify({
             'status': 400,
             'error': 'Bad Request. You must provide a list of ingredients.'
         })
 
     # Classify ingredients
-    clf_ingr = classify_ingredients(ingredients)
-    combined_ingr = combine_classified_ingredients(clf_ingr)
-    return jsonify({
-        'status': 200,
-        'ingredients': combined_ingr,
-    })
+    try:
+        clf_ingr = classify_ingredients(ingredients)
+        combined_ingr = combine_classified_ingredients(clf_ingr)
+        return jsonify({
+            'status': 200,
+            'ingredients': combined_ingr,
+        })
+    except Exception as e:
+        app.logger.error(repr(e))
+        return jsonify({
+            'status': 500,
+            'error': 'Something went terribly wrong...',
+        })

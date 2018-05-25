@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 from mealprep.mealprep import app
-from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequest, ServerError
+from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequestResponse, ServerErrorResponse
 from ..helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
 from ..helpers.general import can_be_float
 
@@ -14,7 +14,7 @@ class NLPIngredientApi(Resource):
             try:
                 already_classified_ingredient = already_classified_ingredient(req_data['original'], req_data['name'])
                 if already_classified_ingredient and not req_data.get('force'):
-                    return BadRequest("Ingredient has already been classified! If you want to save this again, use 'force'.")
+                    return BadRequestResponse("Ingredient has already been classified! If you want to save this again, use 'force'.")
 
                 new_ingredient = save_new_ingredient(req_data['original'],
                                                      req_data['name'],
@@ -26,10 +26,10 @@ class NLPIngredientApi(Resource):
 
             except Exception as e:
                 app.logger.error(repr(e))
-                return ServerError('Server Error. Postgres failed to add new nlp ingredient.')
+                return ServerErrorResponse('Server Error. Postgres failed to add new nlp ingredient.')
 
         else:
-            return BadRequest('Missing required parameters or bad parameters.')
+            return BadRequestResponse('Missing required parameters or bad parameters.')
 
 
     def has_required_data(self, data):
@@ -54,6 +54,6 @@ class ClassifyIngredientApi(Resource):
                 return GenericSuccessResponse(data=ingr)
             except Exception as e:
                 app.logger.error(repr(e))
-                return ServerError('Something went wrong when trying to classify ingredients')
+                return ServerErrorResponse('Something went wrong when trying to classify ingredients')
         else:
-            return BadRequest('Missing parameters: ingredients')
+            return BadRequestResponse('Missing parameters: ingredients')

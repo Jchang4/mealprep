@@ -7,12 +7,10 @@ cors = CORS(app, resources={'*': {'origins': 'http://10.0.2.2:3000'}}) # require
 # Set App Config
 app.config.from_object('config.app.DevelopmentConfig')
 
-from mealprep.models import db
-from mealprep.api import api
+from .models import db
+from .api import api
 
+from .api.helpers.responses import GenericSuccessResponse
 @app.route('/')
 def index():
-    return jsonify({
-        'status': 200,
-        'message': 'Welcome to the MealPrep API!',
-    })
+    return GenericSuccessResponse(message='Welcome to the MealPrep API!')

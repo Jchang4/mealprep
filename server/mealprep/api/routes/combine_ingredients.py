@@ -1,9 +1,36 @@
 from flask import request, jsonify
 from flask_restful import Resource
+from mealprep.mealprep import app
 import mealprep.food_services.food2fork as F2F
-from ..helpers.ingredients import classify_all_ingredients
-from ..helpers.responses import GenericSuccessResponse, BadRequest
-from mealprep.unitconverter import convert_unit
+from ..helpers.ingredients import classify_all_ingredients, combine_ingredients
+from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, ServerErrorResponse
+
+# CLF_INGREDIENTS = [
+#     {'name': 'peanut butter',
+#      'original': '5 tablespoons of peanut butter',
+#      'unit': 'tablespoon',
+#      'quantity': '5',
+#      'comment': '',
+#      'other': 'of'},
+#     {'name': 'peanut butter',
+#      'original': '2 scoops of peanut butter',
+#      'unit': 'scoops',
+#      'quantity': '2',
+#      'comment': '',
+#      'other': 'of'},
+#     {'name': 'peanut butter',
+#      'original': '3 cups peanut butter',
+#      'unit': 'cup',
+#      'quantity': '3',
+#      'comment': '',
+#      'other': ''},
+#     {'name': 'peanut butter',
+#      'original': '1 small teaspoon peanut butter',
+#      'unit': 'teaspoon',
+#      'quantity': '1',
+#      'comment': 'small',
+#      'other': ''},
+# ]
 
 def get_all_ingredients(recipe_ids):
     """ Return a single list of all ingredients for all recipes. """
@@ -14,44 +41,6 @@ def get_all_ingredients(recipe_ids):
             ingredients += r['ingredients']
     return [i.strip() for i in ingredients]
 
-def combine_classified_ingredients(classified_ingredients):
-    """ Combine classified ingredients and add quantities """
-    seen_ingr = {}
-    combined_ingredients = []
-
-    for c in classified_ingredients:
-        name = c['name']
-        if not name in seen_ingr:
-            seen_ingr[name] = {}
-            # These become lists
-            seen_ingr[name]['originals'] = [c['original']]
-            seen_ingr[name]['comments'] = [c['comment']]
-            seen_ingr[name]['others'] = [c['other']]
-            # Other props
-            seen_ingr[name]['name'] = c['name']
-            seen_ingr[name]['unit'] = c['unit']
-            seen_ingr[name]['quantity'] = c['quantity']
-        else:
-            prev_qty = seen_ingr[name]['quantity']
-
-            if c['original'] not in seen_ingr[name]['originals']:
-                seen_ingr[name]['originals'].append(c['original'])
-                seen_ingr[name]['comments'].append(c['comment'])
-                seen_ingr[name]['others'].append(c['other'])
-
-            # Make sure units match, and add quantities
-            if seen_ingr[name]['unit'] == c['unit'] and prev_qty:
-                seen_ingr[name]['quantity'] = float(prev_qty) + float(c['quantity'])
-            elif prev_qty:
-                new_qty = convert_unit(float(c['quantity']),
-                                            c['unit'],
-                                            seen_ingr[name]['unit'])
-                seen_ingr[name]['quantity'] = float(prev_qty) + new_qty
-
-    for key,val in seen_ingr.items():
-        combined_ingredients.append(val)
-
-    return combined_ingredients
 
 class CombineIngredientsApi(Resource):
     """ Take a list of recipe ids, and combine their
@@ -78,9 +67,12 @@ class CombineIngredientsApi(Resource):
         recipe_ids = data.get('recipeIds') or []
 
         if recipe_ids and len(recipe_ids) > 0:
-            ingredients = get_all_ingredients(recipe_ids)
-            classified_ingredients = classify_all_ingredients(ingredients)
-            combined_ingredients = combine_classified_ingredients(classified_ingredients)
-            return GenericSuccessResponse(ingredients=combined_ingredients)
+            try:
+                ingredients = get_all_ingredients(recipe_ids)
+                combined_ingredients = combine_ingredients(ingredients)
+                return GenericSuccessResponse(ingredients=combined_ingredients)
+            except Exception as e:
+                app.logger.error(repr(e))
+                return ServerErrorResponse('Server Error: Cannot combine ingredients.')
         else:
-            return BadRequest('You did not supply any recipe ids.')
+            return BadRequestResponse('You did not supply any recipe ids.')

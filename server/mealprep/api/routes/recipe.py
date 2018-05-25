@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 from mealprep.mealprep import app
 import mealprep.food_services.food2fork as Food2Fork
-from ..helpers.responses import GenericSuccessResponse, BadRequest, NotFound, ServerError
+from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, NotFoundResponse, ServerErrorResponse
 
 class GetRecipesApi(Resource):
     def post(self):
@@ -17,9 +17,9 @@ class GetRecipesApi(Resource):
                 return GenericSuccessResponse(count=recipes['count'], data=recipes['recipes'])
             except Exception as e:
                 app.logger.error(repr(e))
-                return ServerError('May day, may day! Food2Fork is down!')
+                return ServerErrorResponse('May day, may day! Food2Fork is down!')
         else:
-            return BadRequest('Check your query.')
+            return BadRequestResponse('Check your query.')
 
 
 class GetRecipeByIdApi(Resource):
@@ -28,7 +28,7 @@ class GetRecipeByIdApi(Resource):
             r = Food2Fork.get_recipe(recipe_id)
             if r:
                 return GenericSuccessResponse(data=r)
-            return NotFound('Could not find recipe with id: {}'.format(recipe_id))
+            return NotFoundResponse('Could not find recipe with id: {}'.format(recipe_id))
         except Exception as e:
             app.logger.error(repr(e))
-            return ServerError('May day, may day! Food2Fork is down!')
+            return ServerErrorResponse('May day, may day! Food2Fork is down!')
