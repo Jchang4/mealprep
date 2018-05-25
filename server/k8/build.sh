@@ -1,16 +1,11 @@
 #!/bin/bash
 
-BUILD_NUM=$1
+# Delete prev deployment & service
+kubectl delete deploy mealprep-api
+kubectl delete svc mealprep-api
 
-if [ -z $BUILD_NUM ]; then
-  BUILD_NUM='latest'
-fi
+# Build Docker Image
+docker build -f k8/Dockerfile -t mealprep-api:latest . && \
 
-function get_pod_name() {
-  kubectl get pod | grep $1 | awk '{print $1}'
-}
-
-docker build -f k8/Dockerfile -t mealprep-api:$BUILD_NUM . && \
-kubectl delete pod "$(get_pod_name mealprep-api)" && \
-sleep 7 && \
-kubectl get pod "$(get_pod_name mealprep-api)"
+# Redeploy
+kubectl apply -f k8/minikube.yaml

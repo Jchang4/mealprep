@@ -5,3 +5,8 @@ server/tmp
 server/temp
 server/env
 server/**/*__pycache__
+server/**/*.pytest_cache
+
+# NLP Ingredients
+nlp-ingredients/data
+nlp-ingredients/env
