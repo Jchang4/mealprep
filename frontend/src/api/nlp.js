@@ -1,4 +1,5 @@
 import callAPI from './callAPI';
+import { getRecipe } from './f2f';
 import Promise from 'bluebird';
 
 export function postIngredient(data) {
@@ -27,11 +28,32 @@ export function classifyIngredients(ingredients) {
   return callAPI({
     method: 'POST',
     url: '/nlp/classify',
-    data: { ingredients }
+    data: { ingredients },
   })
-  .then(res => res.data)
+  .then(res => res.ingredients)
   .catch(err => {
     console.log('Failed to classify ingredients.');
+    return Promise.reject(err);
+  });
+}
+
+
+
+/**
+ * getIngredients - get ingredients from recipes
+ *
+ * @param  {type} recipeIds recipes to get ingredients from
+ * @return {Array<String} list of ingredients
+ */
+export function getIngredients(recipeIds) {
+  if (!Array.isArray(recipeIds))
+    return Promise.reject('Recipe Ids must be an array of recipe ids.');
+
+  return Promise.map(recipeIds, rId => getRecipe(rId))
+  .then(recipes => recipes.map(r => r.ingredients))
+  .then(ingreds => ingreds.reduce((a,b) => a.concat(b), []))
+  .catch(err => {
+    console.log('Failed to get ingredients.');
     return Promise.reject(err);
   });
 }

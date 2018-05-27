@@ -8,7 +8,7 @@ function callAPI(props) {
     url: SERVER_URL + props.url,
     data: props.data || {},
   })
-  .then(res => res.data);
+  .then(res => res.data); // request body is in 'res.data'
 }
 
 export default callAPI;
