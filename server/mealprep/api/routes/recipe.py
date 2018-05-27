@@ -5,6 +5,7 @@ import mealprep.food_services.food2fork as Food2Fork
 from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, NotFoundResponse, ServerErrorResponse
 
 class GetRecipesApi(Resource):
+    """ Get food2fork recipes """
     def post(self):
         data = request.get_json(force=True, silent=True) or {}
         query = data.get('query')
@@ -23,6 +24,9 @@ class GetRecipesApi(Resource):
 
 
 class GetRecipeByIdApi(Resource):
+    """ Get food2fork recipe details by id
+        Includes additional information such as ingredients
+    """
     def get(self, recipe_id):
         try:
             r = Food2Fork.get_recipe(recipe_id)

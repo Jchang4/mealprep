@@ -7,6 +7,7 @@ from ..helpers.general import can_be_float
 
 
 class NLPIngredientApi(Resource):
+    """ Save new classified ingredient to database """
     def post(self):
         req_data = request.get_json(force=True, silent=True) or {}
 
@@ -46,12 +47,18 @@ class NLPIngredientApi(Resource):
 
 
 class ClassifyIngredientApi(Resource):
+    """ Classify all ingredients
+
+        :param ingredients list<str> : list of ingredients to classify
+
+        Returns: list<dict> : list of classified ingredients
+    """
     def post(self):
         data = request.get_json(force=True, silent=True) or {}
         if data.get('ingredients'):
             try:
                 ingr = classify_all_ingredients(data['ingredients'])
-                return GenericSuccessResponse(data=ingr)
+                return GenericSuccessResponse(ingredients=ingr)
             except Exception as e:
                 app.logger.error(repr(e))
                 return ServerErrorResponse('Something went wrong when trying to classify ingredients')

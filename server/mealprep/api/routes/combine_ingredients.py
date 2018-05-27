@@ -5,32 +5,6 @@ import mealprep.food_services.food2fork as F2F
 from ..helpers.ingredients import classify_all_ingredients, combine_ingredients
 from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, ServerErrorResponse
 
-# CLF_INGREDIENTS = [
-#     {'name': 'peanut butter',
-#      'original': '5 tablespoons of peanut butter',
-#      'unit': 'tablespoon',
-#      'quantity': '5',
-#      'comment': '',
-#      'other': 'of'},
-#     {'name': 'peanut butter',
-#      'original': '2 scoops of peanut butter',
-#      'unit': 'scoops',
-#      'quantity': '2',
-#      'comment': '',
-#      'other': 'of'},
-#     {'name': 'peanut butter',
-#      'original': '3 cups peanut butter',
-#      'unit': 'cup',
-#      'quantity': '3',
-#      'comment': '',
-#      'other': ''},
-#     {'name': 'peanut butter',
-#      'original': '1 small teaspoon peanut butter',
-#      'unit': 'teaspoon',
-#      'quantity': '1',
-#      'comment': 'small',
-#      'other': ''},
-# ]
 
 def get_all_ingredients(recipe_ids):
     """ Return a single list of all ingredients for all recipes. """

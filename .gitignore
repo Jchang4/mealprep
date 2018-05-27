@@ -1,4 +1,7 @@
-*.DS_STORE
+**/*.DS_STORE
+
+# Frontend
+frontend/src/tmp
 
 # Server
 server/tmp
