@@ -1,7 +1,7 @@
-from mealprep.models.database import db
-from mealprep.models.helpers import table_to_dict
+from .database import db
+from .base import BaseModel
 
-class NLPIngredient(db.Model):
+class NLPIngredient(BaseModel, db.Model):
     __tablename__ = 'nlp_ingredient'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -13,6 +13,3 @@ class NLPIngredient(db.Model):
 
     def __repr__(self):
         return '<Ingredient id:{} name:{}>'.format(self.id, self.name)
-
-    def to_dict(self):
-        return table_to_dict(self)
