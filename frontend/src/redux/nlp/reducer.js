@@ -44,7 +44,7 @@ function nlpReducer(state=INITIAL_NLP_STATE, action) {
     case ADD_USER_CLASSIFIED_INGREDIENT:
       return update(state, {
         userClassified: {
-          $set: {[action.payload.name]: action.payload}
+          $merge: {[action.payload.original]: action.payload}
         }
       });
 
