@@ -1,6 +1,5 @@
-from flask import request
+from flask import current_app, request
 from flask_restful import Resource
-from mealprep.mealprep import app
 from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequestResponse, ServerErrorResponse
 from ..helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
 from ..helpers.general import can_be_float
@@ -26,7 +25,7 @@ class NLPIngredientApi(Resource):
                 return CreatedNewItemResponse(data=new_ingredient.to_dict())
 
             except Exception as e:
-                app.logger.error(repr(e))
+                current_app.logger.error(repr(e))
                 return ServerErrorResponse('Server Error. Postgres failed to add new nlp ingredient.')
 
         else:
@@ -60,7 +59,7 @@ class ClassifyIngredientApi(Resource):
                 ingr = classify_all_ingredients(data['ingredients'])
                 return GenericSuccessResponse(ingredients=ingr)
             except Exception as e:
-                app.logger.error(repr(e))
+                current_app.logger.error(repr(e))
                 return ServerErrorResponse('Something went wrong when trying to classify ingredients')
         else:
             return BadRequestResponse('Missing parameters: ingredients')

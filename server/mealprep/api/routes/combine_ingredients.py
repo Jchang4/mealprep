@@ -1,6 +1,5 @@
-from flask import request, jsonify
+from flask import current_app
 from flask_restful import Resource
-from mealprep.mealprep import app
 import mealprep.food_services.food2fork as F2F
 from ..helpers.ingredients import classify_all_ingredients, combine_ingredients
 from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, ServerErrorResponse
@@ -46,7 +45,7 @@ class CombineIngredientsApi(Resource):
                 combined_ingredients = combine_ingredients(ingredients)
                 return GenericSuccessResponse(ingredients=combined_ingredients)
             except Exception as e:
-                app.logger.error(repr(e))
+                current_app.logger.error(repr(e))
                 return ServerErrorResponse('Server Error: Cannot combine ingredients.')
         else:
             return BadRequestResponse('You did not supply any recipe ids.')

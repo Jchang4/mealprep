@@ -32,6 +32,8 @@ def BadRequestResponse(message, **kwargs):
     """ Return 400 error with message and data (optional) """
     return create_request(400, message, kwargs)
 
-def ServerErrorResponse(message, **kwargs):
+def ServerErrorResponse(exception, message, **kwargs):
     """ Return 500 error with message and data (optional) """
-    return create_request(400, message, kwargs)
+    return create_request(400,
+                          (str(exception) or repr(exception) or message),
+                          kwargs)

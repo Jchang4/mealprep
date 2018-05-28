@@ -20,7 +20,6 @@ if not NLP_SERVICE_URL:
     else:
         raise ValueError('Must provide NLP_SERVICE_URL.')
 
-
 # Helper function
 def log_env():
     print('\n' + ('-' * 70))

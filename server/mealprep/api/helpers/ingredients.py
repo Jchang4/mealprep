@@ -1,6 +1,6 @@
+from flask import current_app
 import requests
 from config.env import NLP_SERVICE_URL
-from mealprep.mealprep import app
 from mealprep.models import db, NLPIngredient
 
 def save_new_ingredient(original, name, quantity, unit, comment):
