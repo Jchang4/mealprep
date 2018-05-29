@@ -1,48 +1,52 @@
 from flask import current_app, request
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
+from mealprep.models import db, NLPIngredient
 from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequestResponse, ServerErrorResponse
-from ..helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
+
+# from ..helpers.ingredients import save_new_ingredient, already_classified_ingredient, classify_all_ingredients
 from ..helpers.general import can_be_float
 
+parser = reqparse.RequestParser(trim=True)
+parser.add_argument('original', type=str, required=True, help="Must include original ingredient text.")
+parser.add_argument('name', type=str, required=True, help="Must include ingredient name.")
+parser.add_argument('quantity', type=float, help="Must be a float.")
+parser.add_argument('unit', type=str, help="Must be a string.")
+parser.add_argument('comment', type=str, help="Parts of the ingredient that are comments - i.e. 'diced'.")
+parser.add_argument('force', type=bool, help="True/False whether to force add ingredient to database.")
 
-class NLPIngredientApi(Resource):
-    """ Save new classified ingredient to database """
+
+class AddNlpIngredientAPI(Resource):
+    """ Save new user-classified ingredient to database """
     def post(self):
-        req_data = request.get_json(force=True, silent=True) or {}
+        args = parser.parse_args()
+        original = args['original']
+        name = args['name']
+        quantity = args['quantity'] or None
+        unit = args['unit'] or None
+        comment = args['comment'] or None
+        force = args['force'] or False
 
-        if self.has_required_data(req_data):
-            try:
-                already_classified_ingredient = already_classified_ingredient(req_data['original'], req_data['name'])
-                if already_classified_ingredient and not req_data.get('force'):
-                    return BadRequestResponse("Ingredient has already been classified! If you want to save this again, use 'force'.")
+        if not force:
+            # Check if ingredient already exists
+            # Return Error if already taken
+            ingr = NLPIngredient.query.filter_by(original=original, name=name).first()
+            if ingr:
+                return BadRequestResponse("Ingredient has already been classified! If you want to save this again, use 'force'.")
 
-                new_ingredient = save_new_ingredient(req_data['original'],
-                                                     req_data['name'],
-                                                     req_data.get('quantity'),
-                                                     req_data.get('unit'),
-                                                     req_data.get('comment'))
+        try:
+            # Add new ingredient
+            new_ingr = NLPIngredient(original=original,
+                                     name=name,
+                                     quantity=quantity,
+                                     unit=unit,
+                                     comment=comment)
+            db.session.add(new_ingr)
+            db.session.commit()
+            return CreatedNewItemResponse(ingredient=new_ingr)
+        except Exception as e:
+            current_app.logger.error(repr(e))
+            return ServerErrorResponse(e, 'Server Down: Unable to add new classified ingredients.')
 
-                return CreatedNewItemResponse(data=new_ingredient.to_dict())
-
-            except Exception as e:
-                current_app.logger.error(repr(e))
-                return ServerErrorResponse('Server Error. Postgres failed to add new nlp ingredient.')
-
-        else:
-            return BadRequestResponse('Missing required parameters or bad parameters.')
-
-
-    def has_required_data(self, data):
-        """ Requirements:
-                (required) original
-                (required) name
-                (optional) quantity : must be a float
-        """
-        if not data.get('original') or not data.get('name'):
-            return False
-        if data.get('quantity') and not can_be_float(data['quantity']):
-            return False
-        return True
 
 
 class ClassifyIngredientApi(Resource):
@@ -60,6 +64,6 @@ class ClassifyIngredientApi(Resource):
                 return GenericSuccessResponse(ingredients=ingr)
             except Exception as e:
                 current_app.logger.error(repr(e))
-                return ServerErrorResponse('Something went wrong when trying to classify ingredients')
+                return ServerErrorResponse(e, 'Something went wrong when trying to classify ingredients')
         else:
             return BadRequestResponse('Missing parameters: ingredients')

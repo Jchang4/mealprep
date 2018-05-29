@@ -46,6 +46,6 @@ class CombineIngredientsApi(Resource):
                 return GenericSuccessResponse(ingredients=combined_ingredients)
             except Exception as e:
                 current_app.logger.error(repr(e))
-                return ServerErrorResponse('Server Error: Cannot combine ingredients.')
+                return ServerErrorResponse(e, 'Server Error: Cannot combine ingredients.')
         else:
             return BadRequestResponse('You did not supply any recipe ids.')

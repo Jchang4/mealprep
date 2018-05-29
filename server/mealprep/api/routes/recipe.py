@@ -42,4 +42,4 @@ class GetRecipeByIdApi(Resource):
             return NotFoundResponse('Could not find recipe with id: {}'.format(recipe_id))
         except Exception as e:
             current_app.logger.error(repr(e))
-            return ServerErrorResponse('May day, may day! Food2Fork is down!')
+            return ServerErrorResponse(e, 'May day, may day! Food2Fork is down!')

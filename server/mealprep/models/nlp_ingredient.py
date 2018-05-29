@@ -1,4 +1,4 @@
-from .database import db
+from . import db
 from .base import BaseModel
 
 class NLPIngredient(BaseModel, db.Model):
