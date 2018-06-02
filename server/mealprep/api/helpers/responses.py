@@ -1,39 +1,32 @@
 from flask import jsonify
 
-
-
-def create_request(status_code, message=None, other_data={}):
-    res = { **other_data }
-    if message:
-        res['message'] = message
-    res = jsonify(res)
-    res.status_code = status_code
+def create_request(code, **kwargs):
+    res = jsonify(kwargs)
+    res.status_code = code
     return res
-
 
 # Success
 # ------------------
 def GenericSuccessResponse(**kwargs):
     """ Return 200 with data (optional) """
-    return create_request(200, other_data=kwargs)
+    return create_request(200, **kwargs)
 
-def CreatedNewItemResponse():
+def CreatedNewItemResponse(**kwargs):
     """ Return 201 with data (optional) """
-    return create_request(201, other_data=kwargs)
+    return create_request(201, **kwargs)
 
 
 # Errors
 # ------------------
 def NotFoundResponse(message, **kwargs):
     """ Return 404 error with message and data (optional) """
-    return create_request(404, message, kwargs)
+    return create_request(404, **{**kwargs, 'message': message})
 
 def BadRequestResponse(message, **kwargs):
     """ Return 400 error with message and data (optional) """
-    return create_request(400, message, kwargs)
+    return create_request(400, **{**kwargs, 'message': message})
 
 def ServerErrorResponse(exception, message, **kwargs):
     """ Return 500 error with message and data (optional) """
-    return create_request(400,
-                          (str(exception) or repr(exception) or message),
-                          kwargs)
+    return create_request(500, **{**kwargs,
+                                'message': (str(exception) or repr(exception) or message) })

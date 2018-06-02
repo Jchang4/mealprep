@@ -2,14 +2,9 @@ from flask import current_app
 from flask_restful import Resource, reqparse
 import mealprep.food_services.food2fork as Food2Fork
 from ..helpers.responses import GenericSuccessResponse, BadRequestResponse, NotFoundResponse, ServerErrorResponse
+from ..argparsers import food2fork_args
 
-parser = reqparse.RequestParser(trim=True)
-parser.add_argument('query',
-                    type=str,
-                    required=True,
-                    help="List of ingredients, used to find recipes.")
-parser.add_argument('sort', type=str, help="Must be either letter: 'r' or 't'; for 'rating' and 'trending' respectively.")
-parser.add_argument('page', type=int, help="Must be an integer.")
+parser = food2fork_args()
 
 class GetRecipesApi(Resource):
     """ Get food2fork recipes """
