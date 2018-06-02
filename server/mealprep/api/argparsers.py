@@ -24,7 +24,7 @@ def nlp_ingredient_args():
 def classify_ingredient_args():
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('ingredients',
-                        type=int,
+                        type=str,
                         action='append',
                         required=True,
                         help='Must supply a list of ingredients to classify.')

@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from mealprep.models import db, NLPIngredient
 from ..helpers.responses import GenericSuccessResponse, CreatedNewItemResponse, BadRequestResponse, ServerErrorResponse
 from ..helpers.general import can_be_float
+from ..helpers.ingredients import classify_all_ingredients
 from ..argparsers import nlp_ingredient_args, classify_ingredient_args
 from ..nlp_ingred_manager import add_nlp_ingredient
 from ..logger import server_log
@@ -30,13 +31,11 @@ class AddNlpIngredientAPI(Resource):
         try:
             current_app.logger.info('Adding new NLP Ingredient...')
             # Add new ingredient
-            new_ingr = NLPIngredient(original=original,
-                                     name=name,
-                                     quantity=quantity,
-                                     unit=unit,
-                                     comment=comment)
-            db.session.add(new_ingr)
-            db.session.commit()
+            new_ingr = add_nlp_ingredient(original=original,
+                                          name=name,
+                                          quantity=quantity,
+                                          unit=unit,
+                                          comment=comment)
             current_app.logger.info('Added new NLP Ingredient id={}'.format(new_ingr.id))
             return CreatedNewItemResponse(ingredient=new_ingr.to_dict())
         except Exception as e:
@@ -57,8 +56,10 @@ class ClassifyIngredientApi(Resource):
     def post(self):
         args = self.parser.parse_args()
         ingredients = args['ingredients']
+        current_app.logger.info('Classifying {} ingredients...'.format(len(ingredients)))
         try:
             ingr = classify_all_ingredients(ingredients)
+            current_app.logger.info('Classified {} ingredients...'.format(len(ingredients)))
             return GenericSuccessResponse(ingredients=ingr)
         except Exception as e:
             current_app.logger.error(repr(e))
