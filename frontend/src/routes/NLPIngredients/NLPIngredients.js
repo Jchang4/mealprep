@@ -1,9 +1,15 @@
+/**
+ * TODO:
+ *      - add random paging, so we always get random ingreds
+ *      - move reused code
+ *
+ * Classifying Ingreds:
+ *      - delete classified ingred after classifying
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Promise from 'bluebird';
-import values from 'lodash/values';
-import shuffle from '../../assets/js/shuffle';
-import randomNumber from '../../assets/js/randomNumber';
+import { recipeQueryToArray } from '../../redux/helpers';
 
 // Components
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,9 +29,11 @@ const LABELS = [
 ];
 
 const propTypes = {
-  ingredients: PropTypes.object.isRequired,
+  recipes: PropTypes.object.isRequired,
+  preClassifiedIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
   getRecipes: PropTypes.func.isRequired,
-  getRecipeDetails: PropTypes.func.isRequired,
+  getIngredients: PropTypes.func.isRequired,
+  getClassifiedIngredients: PropTypes.func.isRequired,
 }
 
 class NLPIngredients extends Component {
@@ -49,23 +57,25 @@ class NLPIngredients extends Component {
         Search for recipes, get ingredients, set ingredients to state.nlp
   */
   handleSearchClick(query) {
-    const { getRecipes, preClassifyIngredients } = this.props;
+    const { getIngredients, getClassifiedIngredients } = this.props;
 
     // Ex query: chicken,pasta, oregeno
-    let q = query.split(/\s+|[,]/);
-    let page = Math.round(randomNumber(1,4)); // get random page for variety
+    let q = recipeQueryToArray(query);
+
     console.log('query:', q);
-    console.log('page:', page);
-    return getRecipes(q, page)
-    // // Pick 3 random recipes
-    .then(({ data }) => {
-      let r = shuffle(data);
-      return r.slice(0,4);
-    })
-    // Get only recipe ids
-    .then(recipes => recipes.map(r => r.recipe_id))
+
+    return getIngredients(q, 3)
     // Pre classify and add to Redux
-    .then(recipeIds => preClassifyIngredients(recipeIds))
+    .then(ingredients => {
+      console.log('ingredients:');
+      console.log(ingredients);
+      return getClassifiedIngredients(ingredients);
+    })
+    .then(clfIngreds => {
+      console.log('classified ingredients: showing 10');
+      console.log(clfIngreds.slice(0,10));
+      this.setState({ loading: false });
+    })
     .catch(err => {
       this.setState({ loading: false });
       console.log('Failed to search for ingredients.');
@@ -78,15 +88,14 @@ class NLPIngredients extends Component {
     this.setState({ numLines });
   }
 
-  handleWordClick() {}
-  handleDeleteLine(key) {
-    this.props.removeIngredient(key);
-  }
+  // handleWordClick() {}
+  // handleDeleteLine(key) {
+  //   this.props.removeIngredient(key);
+  // }
 
   render() {
-    const { ingredients } = this.props;
-    const ingreds = values(ingredients).slice(0, this.state.numLines);
-    console.log(ingreds);
+    const { preClassifiedIngredients } = this.props;
+    const ingreds = preClassifiedIngredients.slice(0, this.state.numLines);
 
     return (
       <div style={{position: 'relative'}}>
@@ -121,7 +130,7 @@ class NLPIngredients extends Component {
           />
         </div>
 
-        <div style={{maxWidth: '800px', margin: '0 auto'}}>
+        {/* <div style={{maxWidth: '800px', margin: '0 auto'}}>
           {ingreds.map((ingr,i) => (
             <div key={i}>
               <LineClassifier
@@ -133,11 +142,13 @@ class NLPIngredients extends Component {
               <hr style={{width: '35%', margin: '0.25rem auto'}} />
             </div>
           ))}
-        </div>
+        </div> */}
 
       </div>
     );
   }
 }
+
+NLPIngredients.propTypes = propTypes;
 
 export default NLPIngredients;

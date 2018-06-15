@@ -1,3 +1,6 @@
+import Promise from 'bluebird';
+import shuffle from '../../assets/js/shuffle';
+
 import {
   getAllRecipes,
   getRecipe,
@@ -39,12 +42,37 @@ export function getRecipes(query) {
         type: ADD_N_RECIPES,
         payload: recipes.data,
       });
-      
+
       return recipes;
     })
     .catch(err => {
       console.log('Failed to get all recipes from API.');
       console.log(err);
+    });
+  }
+}
+
+/**
+ * Get first X recipes' ingredients
+ * @param  {[type]} query used to search for recipes, i.e. "chicken, spinach"
+ * @return {Array<String>} list of ingredients
+ */
+export function getIngredients(query, numRecipes=4) {
+  return (dispatch, getState) => {
+    return getRecipes(query)(dispatch, getState)
+    .then(res => res.data)
+    // get recipe ids, return recipeDetails
+    .then(recipes => {
+      return shuffle(recipes)
+            .slice(0, numRecipes)
+            .map(r => r.recipe_id);
+    })
+    .then(recipeIds => Promise.map(recipeIds, rId => getRecipeDetails(rId)(dispatch, getState)))
+    // turn into single array
+    .then(recipes => recipes.reduce((arr,r) => arr.concat(r.ingredients), []))
+    .catch(err => {
+      console.log('Failed to get recipe ingredients from API.');
+      throw new Error(err.message);
     });
   }
 }
@@ -58,6 +86,11 @@ export function getRecipeDetails(recipeId) {
         type: UPDATE_RECIPE,
         payload: recipe
       });
-    });
+      return recipe
+    })
+    .catch(err => {
+      console.log('Failed to update state with recipe details.');
+      throw new Error(err.message);
+    })
   }
 }

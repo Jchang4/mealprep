@@ -6,25 +6,26 @@ import { bindActionCreators } from 'redux';
 // Actions
 import {
   getRecipes,
+  getIngredients,
 } from '../../redux/recipes/actions';
 import {
-  preClassifyIngredients,
-  removeIngredient,
+  getClassifiedIngredients,
 } from '../../redux/nlp/actions';
 
 // Redux
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.nlp,
+    recipes: state.recipes,
+    preClassifiedIngredients: state.nlp.preClassified,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getRecipes,
+    getIngredients,
     // NLP
-    preClassifyIngredients,
-    removeIngredient,
+    getClassifiedIngredients,
   }, dispatch);
 }
 

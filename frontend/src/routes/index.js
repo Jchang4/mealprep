@@ -13,7 +13,7 @@ import Navbar from '../components/Navbar';
 import Home from './Home';
 import RecipePicker from './RecipePicker';
 import GroceryList from './GroceryList';
-// import NLPIngredients from './NLPIngredients';
+import NLPIngredients from './NLPIngredients';
 // import Test from './Test';
 
 
@@ -26,8 +26,7 @@ function Routes() {
         <div style={{padding: '0 1rem', marginBottom: '5rem'}}>
           <Switch>
             {/* <Route path="/test" component={Test} /> */}
-            {/* <Route path="/nlp" component={NLPIngredients} /> */}
-
+            <Route path="/nlp" component={NLPIngredients} />
             <Route path="/grocery" component={GroceryList} />
             <Route path="/recipes" component={RecipePicker} />
             <Route path="/" component={Home} exact />

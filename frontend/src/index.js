@@ -9,6 +9,9 @@ import 'set.prototype.tojson'; // polyfill for Set()
 import './assets/libs/normalize.css';
 import './assets/scss/index.css';
 
+// Verify valid Server config
+import './config';
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';

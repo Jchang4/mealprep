@@ -18,3 +18,13 @@ export function toArray(payload) {
     ? payload
     : [payload]
 }
+
+
+/**
+ * Parse search query and turn into array
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function recipeQueryToArray(query) {
+  return query.split(/\s|[,]/);
+}
