@@ -26,5 +26,5 @@ export function toArray(payload) {
  * @return {[type]}       [description]
  */
 export function recipeQueryToArray(query) {
-  return query.split(/\s|[,]/);
+  return query.split(/\s|[,]/).filter(q => q.length > 0 ? true : false);
 }

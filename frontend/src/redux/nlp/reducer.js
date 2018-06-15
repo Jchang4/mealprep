@@ -48,8 +48,6 @@ function nlpReducer(state=INITIAL_NLP_STATE, action) {
         }
       });
 
-
-
     // case ADD_N_NLP_INGREDIENTS:
     //   return update(state, {$merge: toObject(action.payload, 'original')});
     //
