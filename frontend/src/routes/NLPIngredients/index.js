@@ -1,4 +1,3 @@
-import values from 'lodash/values';
 import NLPIngredients from './NLPIngredients';
 import './NLPIngredients.css';
 import { connect } from 'react-redux';
@@ -20,7 +19,7 @@ import {
 const mapStateToProps = (state) => {
   return {
     recipes: state.recipes,
-    nlp: values(state.nlp),
+    nlp: state.nlp,
   };
 }
 

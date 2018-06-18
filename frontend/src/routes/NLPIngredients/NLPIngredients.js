@@ -33,13 +33,14 @@ const LABELS = Object.keys(labelColorMap)
 
 const propTypes = {
   recipes: PropTypes.object.isRequired,
-  nlp: PropTypes.arrayOf(PropTypes.shape({
-    original: PropTypes.string,
-    name: PropTypes.string,
-    unit: PropTypes.string,
-    quantity: PropTypes.string,
-    comment: PropTypes.string,
-  })).isRequired,
+  nlp: PropTypes.object,
+  // nlp: PropTypes.arrayOf(PropTypes.shape({
+  //   original: PropTypes.string,
+  //   name: PropTypes.string,
+  //   unit: PropTypes.string,
+  //   quantity: PropTypes.string,
+  //   comment: PropTypes.string,
+  // })).isRequired,
   getRecipes: PropTypes.func.isRequired,
   getIngredients: PropTypes.func.isRequired,
   getClassifiedIngredients: PropTypes.func.isRequired,
@@ -73,7 +74,7 @@ class NLPIngredients extends Component {
   getPreClassifiedIngreds() {
     const { numLines } = this.state;
     const { nlp } = this.props;
-    return nlp.slice(0,numLines);
+    return values(nlp).slice(0,numLines);
   }
 
   handleLabelSelect(label) {
@@ -120,7 +121,17 @@ class NLPIngredients extends Component {
   }
 
   handleWordClick(originalText, wordIdx, word) {
-    this.props.updateIngredient(originalText, wordIdx, word, this.state.currLabel);
+    const { currLabel } = this.state;
+    const { nlp, updateIngredient } = this.props;
+    let w = nlp[originalText][word+wordIdx];
+    // Untoggle Label
+    if (w.label === currLabel) {
+      updateIngredient(originalText, wordIdx, word, '');
+    }
+    // Add label!
+    else {
+      updateIngredient(originalText, wordIdx, word, this.state.currLabel);
+    }
   }
 
   handleDeleteLine(originalText) {
