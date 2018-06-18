@@ -1,6 +1,8 @@
 import Promise from 'bluebird';
-// import { toObject, toArray } from '../helpers';
+import { toObject } from '../helpers';
 import { getRecipe } from '../../api/f2f';
+import labelColorMap from './labelColorMap.json';
+
 import {
   postIngredient,
   classifyIngredients,
@@ -8,17 +10,15 @@ import {
 
 import {
   ADD_PRE_CLASSIFIED_INGREDIENTS,
-  ADD_USER_CLASSIFIED_INGREDIENT,
-//   ADD_N_NLP_INGREDIENTS,
-//   ADD_NLP_INGREDIENT,
-//   REMOVE_NLP_INGREDIENT,
-//   UPDATE_NLP_INGREDIENT,
+  UPDATE_NLP_INGREDIENT,
+  REMOVE_NLP_INGREDIENT,
 } from './constants';
 
 
 
 /**
  * getClassifiedIngredients - get classified ingredients and save to redux/nlp
+ *                            in state.nlp.preClassified
  *
  * @param  {Array<String>} ingredients list of ingredients
  * @return {Promise}
@@ -26,12 +26,14 @@ import {
 export function getClassifiedIngredients(ingredients) {
   return (dispatch, getState) => {
     return classifyIngredients(ingredients)
-    .then(classifiedIngreds => {
+    .then(clfIngreds => clfIngreds.map(clfToWordLabelMap))
+    .then(wordLabelMaps => toObject(wordLabelMaps, "_original"))
+    .then(wordLabelMaps => {
       dispatch({
         type: ADD_PRE_CLASSIFIED_INGREDIENTS,
-        payload: classifiedIngreds,
+        payload: wordLabelMaps,
       });
-      return classifiedIngreds;
+      return wordLabelMaps;
     })
     .catch(err => {
       console.log('Failed to add classified ingredients to redux.');
@@ -40,90 +42,73 @@ export function getClassifiedIngredients(ingredients) {
   }
 }
 
-
-/**
- * _validateUserClassifiedIngredient - validate user classified ingredient has
- *                                       original and name
- *                                     validate "                             "
- *                                       valid quantity, unit, and comment
- *
- * @param  {Object} clfIngredient
- * @return {Boolean} Return true if clfIngredient is valid, else return false
- */
-function _validateUserClassifiedIngredient(clfIngredient) {
-  // Must have 'original' and 'name'
-  if (!clfIngredient.original || !clfIngredient.name)
-    return false;
-
-  // 'Quantity' must be a float
-  if (clfIngredient.quantity && !Number(clfIngredient.quantity))
-    return false;
-
-  return true;
+export function updateIngredient(ingredient) {
+  return (dispatch, getState) => {
+    // TODO: validate all params are present (original, quant, name, unit, comments, other)
+    dispatch({
+      type: UPDATE_NLP_INGREDIENT,
+      payload: ingredient,
+    });
+  }
 }
 
-/**
- * addUserClassifiedIngredient - add user-classified ingredient
- *
- * classified ingredient must be of the form:
- *  {
- *      original    required
- *      name        required
- *      quantity    optional
- *      unit        optional
- *      comment     optional
- *  }
- *
- * @param  {Object} clfIngredient classified ingredient
- * @return {Promise}
- */
-export function addUserClassifiedIngredient(clfIngredient) {
+export function removeIngredient(originalText) {
   return (dispatch, getState) => {
-    return Promise.resolve()
-    .then(() => {
-      // Validate clf ingredient
-      let isValid = _validateUserClassifiedIngredient(clfIngredient);
-
-      if (isValid) {
-        dispatch({
-          type: ADD_USER_CLASSIFIED_INGREDIENT,
-          payload: clfIngredient,
-        });
-        return clfIngredient
-      }
-
-      return Promise.reject('Invalid user classified ingredient.');
+    dispatch({
+      type: REMOVE_NLP_INGREDIENT,
+      payload: originalText,
     });
   }
 }
 
 
-// function ingredientToWords(ingr) {
-//   let unique = '$%$'
-//   // Use split,join to replace parentheses
-//   // and regex to separate it out - lets us keep the parenths as "words"
-//   let words = ingr.split('(').join('('+unique);
-//   words = words.split(')').join(unique+')');
-//   words = words.split(/\s+|[,!?]+|\$%\$/).filter(Boolean);
-//   return words;
-// }
 
+/**
+ * From ingredient, get a list of words; remove most punctuation
+ * @param  {String} ingredient   original text
+ * @return {Array<String>}       array of words
+ */
+function ingredientToWords(ingredient) {
+  const unique = '$%$';
+  // Use split,join to replace parentheses
+  // and regex to separate it out - lets us keep the parenths as "words"
+  let words = ingredient.split('(').join('('+unique);
+  words = words.split(')').join(unique+')');
+  words = words.split(/\s+|[,!?]+|\$%\$/).filter(Boolean); // remove empty strings
+  return words;
+}
 
-// export function updateIngredient(ingredient) {
-//   return (dispatch, getState) => {
-//     // TODO: validate all params are present (original, quant, name, unit, comments, other)
-//     dispatch({
-//       type: UPDATE_NLP_INGREDIENT,
-//       payload: ingredient,
-//     });
-//   }
-// }
-//
-// export function removeIngredient(originalText) {
-//   return (dispatch, getState) => {
-//     dispatch({
-//       type: REMOVE_NLP_INGREDIENT,
-//       payload: originalText,
-//     });
-//   }
-// }
+/**
+ * Change classified ingredient object to word map
+ *    keep original properties
+ * @return {Object} object with words as labels and original properties prefixed with underscore
+ */
+function clfToWordLabelMap({ original, name, unit, quantity, comment }) {
+  let words = ingredientToWords(original);
+  let newIng = {
+    _words: words,
+    _original: original,
+    _name: name,
+    _unit: unit,
+    _quantity: quantity,
+    _comment: comment,
+  };
+
+  words.forEach((w,idx) => {
+    let label = '';
+
+    if (name.indexOf(w) !== -1) {
+      label = 'name';
+    } else if (unit.indexOf(w) !== -1) {
+      label = 'unit';
+    } else if (quantity.indexOf(w) !== -1) {
+      label = 'quantity';
+    } else if (comment.indexOf(w) !== -1) {
+      label = 'comment';
+    }
+
+    newIng[w+idx] = {label, color: labelColorMap[label]};
+  });
+
+  return newIng;
+}

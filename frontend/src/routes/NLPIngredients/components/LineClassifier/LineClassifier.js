@@ -9,8 +9,8 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const propTypes = {
   ingredient: PropTypes.shape({
-    original: PropTypes.string,
-    words: PropTypes.arrayOf(PropTypes.string).isRequired,
+    _original: PropTypes.string,
+    _words: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   hightlight: PropTypes.string,
   onWordClick: PropTypes.func,
@@ -35,7 +35,7 @@ class LineClassifier extends Component {
     return (
       <div>
         <div className="LineClassifier flex-center text-center">
-          {ingredient.words.map((word,i) => (
+          {ingredient._words.map((word,i) => (
             <SelectWord
               key={i}
               word={word}

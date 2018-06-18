@@ -5,15 +5,12 @@
  * classification
  */
 import update from 'immutability-helper';
-// import { toObject, toArray } from '../helpers';
+import { toArray } from '../helpers';
 
 import {
   ADD_PRE_CLASSIFIED_INGREDIENTS,
-  ADD_USER_CLASSIFIED_INGREDIENT,
-  // ADD_N_NLP_INGREDIENTS,
-  // ADD_NLP_INGREDIENT,
-  // REMOVE_NLP_INGREDIENT,
-  // UPDATE_NLP_INGREDIENT,
+  UPDATE_NLP_INGREDIENT,
+  REMOVE_NLP_INGREDIENT,
 } from './constants';
 
 /**
@@ -28,24 +25,14 @@ import {
  *    },
  *  ]
  */
-const INITIAL_NLP_STATE = {
-  preClassified: [],
-  userClassified: {},
-};
+const INITIAL_NLP_STATE = {};
 
 function nlpReducer(state=INITIAL_NLP_STATE, action) {
   switch (action.type) {
 
     case ADD_PRE_CLASSIFIED_INGREDIENTS:
       return update(state, {
-        preClassified: {$push: action.payload}
-      });
-
-    case ADD_USER_CLASSIFIED_INGREDIENT:
-      return update(state, {
-        userClassified: {
-          $merge: {[action.payload.original]: action.payload}
-        }
+        $merge: action.payload
       });
 
     // case ADD_N_NLP_INGREDIENTS:
@@ -56,11 +43,11 @@ function nlpReducer(state=INITIAL_NLP_STATE, action) {
     //   return update(state, {
     //     [action.payload.original]: {$set: action.payload}
     //   });
-    //
-    // case REMOVE_NLP_INGREDIENT:
-    //   return update(state, {
-    //     $unset: toArray(action.payload)
-    //   });
+
+    case REMOVE_NLP_INGREDIENT:
+      return update(state, {
+        $unset: toArray(action.payload)
+      });
 
     default:
       return state;

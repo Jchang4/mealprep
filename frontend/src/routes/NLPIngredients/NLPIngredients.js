@@ -6,10 +6,12 @@
  * Classifying Ingreds:
  *      - delete classified ingred after classifying
  */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { recipeQueryToArray } from '../../redux/helpers';
+import values from 'lodash/values';
+
+import labelColorMap from '../../redux/nlp/labelColorMap.json';
 
 // Components
 import RaisedButton from 'material-ui/RaisedButton';
@@ -20,17 +22,22 @@ import LabelSelector from './components/LabelSelector';
 import LineClassifier from './components/LineClassifier';
 
 
-const LABELS = [
-  {name: 'quantity', color: '#cfc'},
-  {name: 'unit', color: '#ccf'},
-  {name: 'name', color: '#fcc'},
-  // {name: 'comment', color: '#ffc'},
-  // {name: 'other', color: '#c9ffff'},
-];
+const LABELS = Object.keys(labelColorMap).map(k => {
+  return {
+    name: k,
+    color: labelColorMap[k]
+  };
+});
 
 const propTypes = {
   recipes: PropTypes.object.isRequired,
-  preClassifiedIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nlp: PropTypes.arrayOf(PropTypes.shape({
+    original: PropTypes.string,
+    name: PropTypes.string,
+    unit: PropTypes.string,
+    quantity: PropTypes.string,
+    comment: PropTypes.string,
+  })).isRequired,
   getRecipes: PropTypes.func.isRequired,
   getIngredients: PropTypes.func.isRequired,
   getClassifiedIngredients: PropTypes.func.isRequired,
@@ -43,6 +50,28 @@ class NLPIngredients extends Component {
     currLabel: '',
     currColor: '',
     loading: false,
+  }
+
+  // ========================================================================
+  // NOTE: for development
+  componentDidMount() {
+    let recipes = values(this.props.recipes).filter(r => r.ingredients)
+                  .map(r => r.ingredients)
+                  .reduce((arr,r) => arr.concat(r), []);
+    this.props.getClassifiedIngredients(recipes);
+  }
+  // ========================================================================
+
+
+  /**
+   * getPreClassifiedIngreds - get first N amount of preclassified ingredients
+   *                           where N is state.numLines
+   * @return {Array<Object>}  array of classified ingredients
+   */
+  getPreClassifiedIngreds() {
+    const { numLines } = this.state;
+    const { nlp } = this.props;
+    return nlp.slice(0,numLines);
   }
 
   handleLabelSelect(label, color) {
@@ -88,14 +117,16 @@ class NLPIngredients extends Component {
     this.setState({ numLines });
   }
 
-  // handleWordClick() {}
-  // handleDeleteLine(key) {
-  //   this.props.removeIngredient(key);
-  // }
+  handleWordClick(originalText, wordIdx, word) {
+    // this.props.
+  }
+
+  handleDeleteLine(originalText) {
+    this.props.removeIngredient(originalText);
+  }
 
   render() {
-    const { preClassifiedIngredients } = this.props;
-    const ingreds = preClassifiedIngredients.slice(0, this.state.numLines);
+    const ingreds = this.getPreClassifiedIngreds();
 
     return (
       <div style={{position: 'relative'}}>
@@ -130,19 +161,19 @@ class NLPIngredients extends Component {
           />
         </div>
 
-        {/* <div style={{maxWidth: '800px', margin: '0 auto'}}>
+        <div style={{maxWidth: '800px', margin: '0 auto'}}>
           {ingreds.map((ingr,i) => (
             <div key={i}>
               <LineClassifier
                 ingredient={ingr}
                 hightlight={this.state.currColor}
-                onWordClick={(wordIdx, word) => this.handleWordClick(i, wordIdx, word)}
-                onDeleteClick={() => this.handleDeleteLine(ingr.original)}
+                onWordClick={(wordIdx, word) => this.handleWordClick(ingr._original, wordIdx, word)}
+                onDeleteClick={() => this.handleDeleteLine(ingr._original)}
               />
               <hr style={{width: '35%', margin: '0.25rem auto'}} />
             </div>
           ))}
-        </div> */}
+        </div>
 
       </div>
     );

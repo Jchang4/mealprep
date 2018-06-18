@@ -1,3 +1,4 @@
+import values from 'lodash/values';
 import NLPIngredients from './NLPIngredients';
 import './NLPIngredients.css';
 import { connect } from 'react-redux';
@@ -10,13 +11,15 @@ import {
 } from '../../redux/recipes/actions';
 import {
   getClassifiedIngredients,
+  updateIngredient,
+  removeIngredient,
 } from '../../redux/nlp/actions';
 
 // Redux
 const mapStateToProps = (state) => {
   return {
     recipes: state.recipes,
-    preClassifiedIngredients: state.nlp.preClassified,
+    nlp: values(state.nlp),
   };
 }
 
@@ -26,6 +29,8 @@ const mapDispatchToProps = (dispatch) => {
     getIngredients,
     // NLP
     getClassifiedIngredients,
+    updateIngredient,
+    removeIngredient,
   }, dispatch);
 }
 

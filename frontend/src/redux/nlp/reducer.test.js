@@ -45,8 +45,7 @@ const INGREDIENTS = [
 ];
 
 const INITIAL_STATE = {
-  preClassified: [],
-  userClassified: {},
+  preClassified: {},
 };
 var state;
 
@@ -89,8 +88,8 @@ describe('add pre-classified ingredients', () => {
 });
 
 
-describe('add user-classified ingredients', () => {
-  test('should add user-classified ingredients to state.userClassified', async () => {
+describe('add pre-classified ingredients', () => {
+  test('should add pre-classified ingredients to state.preClassified', async () => {
     expect.assertions(1);
     let userClfIngred = {
       original: '2 whole Large Eggs',
