@@ -1,6 +1,4 @@
-import Promise from 'bluebird';
 import { toObject } from '../helpers';
-import { getRecipe } from '../../api/f2f';
 import labelColorMap from './labelColorMap.json';
 
 import {
@@ -42,12 +40,18 @@ export function getClassifiedIngredients(ingredients) {
   }
 }
 
-export function updateIngredient(ingredient) {
+export function updateIngredient(original, wordIdx, word, label) {
   return (dispatch, getState) => {
     // TODO: validate all params are present (original, quant, name, unit, comments, other)
     dispatch({
       type: UPDATE_NLP_INGREDIENT,
-      payload: ingredient,
+      payload: {
+        original,
+        [word+wordIdx]: {
+          label,
+          color: labelColorMap[label]
+        },
+      },
     });
   }
 }

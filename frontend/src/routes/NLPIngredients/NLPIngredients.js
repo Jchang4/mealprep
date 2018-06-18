@@ -74,9 +74,9 @@ class NLPIngredients extends Component {
     return nlp.slice(0,numLines);
   }
 
-  handleLabelSelect(label, color) {
+  handleLabelSelect(label) {
     if (label !== this.state.currLabel) {
-      this.setState({ currLabel: label, currColor: color });
+      this.setState({ currLabel: label, currColor: labelColorMap[label] });
     } else {
       this.setState({ currLabel: '', currColor: '' });
     }
@@ -118,7 +118,7 @@ class NLPIngredients extends Component {
   }
 
   handleWordClick(originalText, wordIdx, word) {
-    // this.props.
+    this.props.updateIngredient(originalText, wordIdx, word, this.state.currLabel);
   }
 
   handleDeleteLine(originalText) {
@@ -140,7 +140,7 @@ class NLPIngredients extends Component {
           <LabelSelector
             selectedLabel={this.state.currLabel}
             labels={LABELS}
-            onLabelSelect={(label, color) => this.handleLabelSelect(label, color)}
+            onLabelSelect={(label) => this.handleLabelSelect(label)}
           />
         </div>
 
@@ -174,6 +174,8 @@ class NLPIngredients extends Component {
             </div>
           ))}
         </div>
+
+        
 
       </div>
     );

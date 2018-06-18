@@ -76,7 +76,7 @@ class LabelSelector extends Component {
             <div
               className="LabelSelector_circle hover"
               style={{ background: label.color }}
-              onClick={(e) => onLabelSelect(label.name, label.color)}
+              onClick={(e) => onLabelSelect(label.name)}
             ></div>
           </div>
         ))}
