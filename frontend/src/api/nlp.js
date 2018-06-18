@@ -8,7 +8,7 @@ export function postIngredient(data) {
 
   return callAPI({
     method: 'POST',
-    url: '/nlp/ingredients',
+    url: '/nlp',
     data: {
       force: true,
       ...data
@@ -50,6 +50,10 @@ export function getIngredients(recipeIds) {
     return Promise.reject('Recipe Ids must be an array of recipe ids.');
 
   return Promise.map(recipeIds, rId => getRecipe(rId))
+  .catch(err => {
+    console.log('Failed to add some ingredients.');
+    console.log(err);
+  })
   .then(recipes => recipes.map(r => r.ingredients))
   .then(ingreds => ingreds.reduce((a,b) => a.concat(b), []))
   .catch(err => {

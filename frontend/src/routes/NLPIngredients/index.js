@@ -13,6 +13,7 @@ import {
   getClassifiedIngredients,
   updateIngredient,
   removeIngredient,
+  postIngredientsToApi,
 } from '../../redux/nlp/actions';
 
 // Redux
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
     getClassifiedIngredients,
     updateIngredient,
     removeIngredient,
+    postIngredientsToApi,
   }, dispatch);
 }
 

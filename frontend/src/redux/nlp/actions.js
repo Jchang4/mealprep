@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import { toObject } from '../helpers';
 import labelColorMap from './labelColorMap.json';
 
@@ -61,6 +62,49 @@ export function removeIngredient(originalText) {
     dispatch({
       type: REMOVE_NLP_INGREDIENT,
       payload: originalText,
+    });
+  }
+}
+
+export function postIngredientsToApi(ingredients) {
+  return (dispatch, getState) => {
+    // Format ingredients
+    let ingreds = ingredients.map(ing => {
+      let clfIng = {
+        original: ing._original,
+        name: '',
+        unit: '',
+        quantity: '',
+        comment: '',
+      };
+      ing._words.forEach((w,i) => {
+        let label = ing[w+i].label;
+        if (label === 'name') {
+          clfIng.name += w + ' ';
+        } else if (label === 'unit') {
+          clfIng.unit += w + ' ';
+        } else if (label === 'quantity') {
+          clfIng.quantity += w + ' ';
+        } else if (label === 'comment') {
+          clfIng.comment += w + ' ';
+        }
+      });
+
+      Object.keys(clfIng).forEach(k => {
+        clfIng[k] = clfIng[k].trim();
+      });
+
+      clfIng.quantity = Number(clfIng.quantity);
+
+      return clfIng;
+    });
+
+    // Add to database and Delete from state
+    return Promise.map(ingreds, (ing) => postIngredient(ing))
+    .then(addedIngreds => {
+      console.log(`Added ${addedIngreds.length} classified ingredients!`);
+      // Delete ingredients from state
+      ingreds.forEach(ing => removeIngredient(ing.original)(dispatch, getState));
     });
   }
 }

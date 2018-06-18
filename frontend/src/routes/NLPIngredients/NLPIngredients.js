@@ -22,12 +22,14 @@ import LabelSelector from './components/LabelSelector';
 import LineClassifier from './components/LineClassifier';
 
 
-const LABELS = Object.keys(labelColorMap).map(k => {
-  return {
-    name: k,
-    color: labelColorMap[k]
-  };
-});
+const LABELS = Object.keys(labelColorMap)
+                    .filter(k => k !== 'other')
+                    .map(k => {
+                      return {
+                        name: k,
+                        color: labelColorMap[k]
+                      };
+                    });
 
 const propTypes = {
   recipes: PropTypes.object.isRequired,
@@ -125,6 +127,12 @@ class NLPIngredients extends Component {
     this.props.removeIngredient(originalText);
   }
 
+  handleSubmit() {
+    const { postIngredientsToApi } = this.props;
+    let ingreds = this.getPreClassifiedIngreds();
+    return postIngredientsToApi(ingreds);
+  }
+
   render() {
     const ingreds = this.getPreClassifiedIngreds();
 
@@ -175,7 +183,23 @@ class NLPIngredients extends Component {
           ))}
         </div>
 
-        
+        {/* Submit Button */}
+        <div
+          className="flex-center"
+          style={{
+            justifyContent: 'flex-end',
+            width: '90%',
+            maxWidth: '600px',
+            margin: '1.5rem auto 0 auto',
+          }}
+        >
+          <RaisedButton
+            label="Submit"
+            secondary={true}
+            disabled={(ingreds.length === 0) ? true : false}
+            onClick={() => this.handleSubmit()}
+          />
+        </div>
 
       </div>
     );
