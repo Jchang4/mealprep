@@ -22,7 +22,7 @@ const defaultProps = {};
 class RecipePicker extends Component {
 
   state = {
-    range: [0,9], // show 10 recipes on default
+    range: [0,10], // show 10 recipes on default
     page: 1,
   }
 
@@ -105,6 +105,10 @@ class RecipePicker extends Component {
       .sort((a,b) => (a.social_rank < b.social_rank) ? 1 : -1)
       .slice(range[0], range[1]);
 
+    // let totalPages = Math.floor(Object.keys(recipes).length / 10);
+    let totalPages = '';
+    // console.log(Object.keys(recipes).length);
+
     return (
       <div className="RecipePicker">
 
@@ -129,6 +133,7 @@ class RecipePicker extends Component {
         {/* Directional Buttons */}
         <PagingButtons
           pageNumber={page}
+          totalPages={totalPages}
           onNextClick={() => this.handleNextPage()}
           onPrevClick={() => this.handlePrevPage()}
         />

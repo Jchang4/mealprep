@@ -11,8 +11,8 @@ from ..logger import server_log
 class AddNlpIngredientAPI(Resource):
     parser = nlp_ingredient_args()
 
-    """ Save new user-classified ingredient to database """
     def post(self):
+        """ Save new user-classified ingredient to database """
         args = self.parser.parse_args()
         original = args['original']
         name = args['name']

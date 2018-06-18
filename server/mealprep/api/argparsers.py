@@ -17,9 +17,10 @@ def nlp_ingredient_args():
     parser.add_argument('name', type=str, required=True, help="Must include ingredient name.")
     parser.add_argument('quantity', type=float, help="Must be a float.")
     parser.add_argument('unit', type=str, help="Must be a string.")
-    parser.add_argument('comment', type=str, help="Parts of the ingredient that are comments - i.e. 'diced'.")
+    parser.add_argument('comment', type=str, help="Must be a string. Parts of the ingredient that are comments - i.e. 'diced'.")
     parser.add_argument('force', type=bool, help="True/False whether to force add ingredient to database.")
     return parser
+
 
 def classify_ingredient_args():
     parser = reqparse.RequestParser(trim=True)
