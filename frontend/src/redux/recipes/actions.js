@@ -79,7 +79,6 @@ export function getRecipes(query) {
 export function getIngredients(query, numRecipes=4) {
   return (dispatch, getState) => {
     return getRecipes(query)(dispatch, getState)
-    .then(res => res.data)
     // get recipe ids, return recipeDetails
     .then(recipes => {
       return shuffle(recipes)

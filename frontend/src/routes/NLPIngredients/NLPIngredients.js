@@ -55,15 +55,15 @@ class NLPIngredients extends Component {
     loading: false,
   }
 
-  // ========================================================================
-  // NOTE: for development
-  componentDidMount() {
-    let recipes = values(this.props.recipes).filter(r => r.ingredients)
-                  .map(r => r.ingredients)
-                  .reduce((arr,r) => arr.concat(r), []);
-    this.props.getClassifiedIngredients(recipes);
-  }
-  // ========================================================================
+  // // ========================================================================
+  // // NOTE: for development
+  // componentDidMount() {
+  //   let recipes = values(this.props.recipes).filter(r => r.ingredients)
+  //                 .map(r => r.ingredients)
+  //                 .reduce((arr,r) => arr.concat(r), []);
+  //   this.props.getClassifiedIngredients(recipes);
+  // }
+  // // ========================================================================
 
 
   /**
@@ -104,8 +104,7 @@ class NLPIngredients extends Component {
       return getClassifiedIngredients(ingredients);
     })
     .then(clfIngreds => {
-      console.log('classified ingredients: showing 10');
-      console.log(clfIngreds.slice(0,10));
+      console.log('classified ingredients.');
       this.setState({ loading: false });
     })
     .catch(err => {

@@ -1,7 +1,7 @@
 {
-  "name": "#fcc",
-  "unit": "#ccf",
   "quantity": "#cfc",
+  "unit": "#ccf",
+  "name": "#fcc",
   "comment": "#ffc",
   "other": ""
 }
