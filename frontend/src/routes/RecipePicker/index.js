@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 // Actions
-import { removeRecipe } from '../../redux/recipes/actions';
+import {
+  addAllRecipes,
+  removeRecipe,
+} from '../../redux/recipes/actions';
 import {
   addToPlanner,
   removeFromPlanner,
@@ -21,6 +24,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     // Recipes
+    addAllRecipes,
     removeRecipe,
     // Planner
     addToPlanner,

@@ -8,15 +8,7 @@ import {
   UPDATE_RECIPE,
 } from './constants';
 
-// const INITIAL_RECIPE_STATE = {}; // food2fork recipes
-// ================================================
-//                For Development
-// ================================================
-import ALL_RECIPES from '../../tmp/all-recipes';
-let INITIAL_RECIPE_STATE = {};
-ALL_RECIPES.forEach(r => {
-  INITIAL_RECIPE_STATE[r.recipe_id] = r;
-});
+const INITIAL_RECIPE_STATE = {};
 
 function recipeReducer(state=INITIAL_RECIPE_STATE, action) {
   switch (action.type) {

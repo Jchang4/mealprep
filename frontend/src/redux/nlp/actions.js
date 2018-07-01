@@ -32,6 +32,7 @@ export function getClassifiedIngredients(ingredients) {
         type: ADD_PRE_CLASSIFIED_INGREDIENTS,
         payload: wordLabelMaps,
       });
+
       return wordLabelMaps;
     })
     .catch(err => {

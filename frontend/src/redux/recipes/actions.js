@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import shuffle from '../../assets/js/shuffle';
+import { toObject } from '../helpers';
 
 import {
   getAllRecipes,
@@ -13,13 +14,38 @@ import {
   UPDATE_RECIPE,
 } from './constants';
 
-// Add recipe to redux
+/**
+ * add a single recipe with timestamp for sorting
+ * @param {Array<Object>} recipe recipe from API
+ */
 export function addRecipe(recipe) {
   return (dispatch, getState) => {
     dispatch({
       type: ADD_RECIPE,
       payload: recipe
     });
+  }
+}
+
+/**
+ * add several recipes with timestamp for sorting
+ * @param {Array<Object>} recipes list of recipes from API
+ */
+export function addAllRecipes(recipes) {
+  return (dispatch, getState) => {
+    console.log(recipes);
+
+    let d = new Date().getTime();
+    let recipesWithTimestamp = recipes.map(r => {
+      return {...r, timestamp: d };
+    });
+
+    dispatch({
+      type: ADD_N_RECIPES,
+      payload: recipesWithTimestamp
+    });
+
+    return recipesWithTimestamp;
   }
 }
 
@@ -37,14 +63,7 @@ export function removeRecipe(recipeId) {
 export function getRecipes(query) {
   return (dispatch, getState) => {
     return getAllRecipes(query)
-    .then(recipes => {
-      dispatch({
-        type: ADD_N_RECIPES,
-        payload: recipes.data,
-      });
-
-      return recipes;
-    })
+    .then(recipes => addAllRecipes(recipes.data)(dispatch, getState))
     .catch(err => {
       console.log('Failed to get all recipes from API.');
       console.log(err);

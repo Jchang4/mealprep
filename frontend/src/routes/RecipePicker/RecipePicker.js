@@ -9,6 +9,10 @@ import RecipeCard from '../../components/Cards/RecipeCard';
 import PagingButtons from '../../components/PagingButtons';
 
 
+// ============== For Development =================
+import ALL_RECIPES from '../../tmp/all-recipes';
+
+
 const propTypes = {
   recipes: PropTypes.object,
   // Redux Actions
@@ -28,6 +32,9 @@ class RecipePicker extends Component {
 
   componentDidMount() {
     window.scrollTo(0,0);
+
+    // ============== For Development =================
+    this.props.addAllRecipes(ALL_RECIPES);
   }
 
   handleNextPage() {
@@ -102,12 +109,17 @@ class RecipePicker extends Component {
     const { recipes, planner, history } = this.props;
     const { range, page } = this.state;
     const allRecipes = values(recipes)
-      .sort((a,b) => (a.social_rank < b.social_rank) ? 1 : -1)
+      .sort((a,b) => (a.timestamp < b.timestamp)
+        ? 1
+        : a.social_rank < b.social_rank
+          ? 1 : -1)
       .slice(range[0], range[1]);
+
+    console.log(allRecipes);
 
     // let totalPages = Math.floor(Object.keys(recipes).length / 10);
     let totalPages = '';
-    // console.log(Object.keys(recipes).length);
+    // console.log(allRecipes.length);
 
     return (
       <div className="RecipePicker">
