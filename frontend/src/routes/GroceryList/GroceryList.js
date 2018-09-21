@@ -11,9 +11,9 @@ class GroceryList extends Component {
     ingredients: [],
   }
 
-  componentDidMount() {
-    this.getAllIngredients();
-  }
+  // componentDidMount() {
+  //   this.getAllIngredients();
+  // }
 
   getAllIngredients() {
     const {

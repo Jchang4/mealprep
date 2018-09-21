@@ -20,3 +20,9 @@ export function removeFromPlanner(recipeId) {
     });
   }
 }
+
+/**
+ * Make sure all recipes in planner have recipe details
+ * Get all ingredients
+ * Combine like ingredient units
+ */
