@@ -12,7 +12,7 @@ server-python/**/*.pytest_cache
 
 # Server
 server/node_modules
-
+server/dist
 
 
 # NLP Ingredients
