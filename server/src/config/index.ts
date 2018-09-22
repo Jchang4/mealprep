@@ -1,3 +1,5 @@
+"use strict"
+
 export default {
     // Server
     PORT: process.env.SERVER_PORT || 3000,
