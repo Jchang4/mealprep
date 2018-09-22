@@ -21,6 +21,9 @@
     "@types/express": "^4.16.0",
     "@types/figlet": "^1.2.0",
     "express": "^4.16.3",
-    "figlet": "^1.2.0"
+    "figlet": "^1.2.0",
+    "joi": "^13.6.0",
+    "joigoose": "^4.0.2",
+    "mongoose": "^5.2.17"
   }
 }
