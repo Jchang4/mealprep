@@ -5,6 +5,11 @@ const nodemon = require('nodemon');
 
 const webpackConfig = require('./webpack.config')
 
+
+// TODO: grab environment from config
+webpackConfig.mode = 'development'
+
+
 function onBuild(done) {
     return function(err, stats) {
       if(err) {
