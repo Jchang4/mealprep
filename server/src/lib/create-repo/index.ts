@@ -1,10 +1,12 @@
 "use strict"
 
-export default function createRepo(Model) {
+import { Model as MongooseModel } from 'mongoose'
+
+export default function createRepo(model : MongooseModel) {
     return {
-        ...Model,
-        find: (query : object) => Model.find(query).lean().exec(),
-        findById: (query : object) => Model.findById(query).lean().exec(),
-        save: (doc : Model) => Model.save(doc).lean().exec(),
+        ...model,
+        find: (query : object) => model.find(query).lean().exec(),
+        findById: (query : object) => model.findById(query).lean().exec(),
+        save: (doc : MongooseModel) => model.save(doc).lean().exec(),
     }
 }
