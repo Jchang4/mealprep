@@ -3,12 +3,17 @@
 # Frontend
 frontend/src/tmp
 
+# Server-Python
+server-python/tmp
+server-python/temp
+server-python/env
+server-python/**/*__pycache__
+server-python/**/*.pytest_cache
+
 # Server
-server/tmp
-server/temp
-server/env
-server/**/*__pycache__
-server/**/*.pytest_cache
+server/node_modules
+
+
 
 # NLP Ingredients
 nlp-ingredients/data
