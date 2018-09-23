@@ -1,7 +1,7 @@
 
-1. Setup mongo
+1. ~~Setup mongo~~
 
-2. Create RecipeApiEvents and RecipeApiProfiles database
+2. ~~Create RecipeApiEvents and RecipeApiProfiles database~~
 
 3. Get API keys and accounts, add to mongo
 

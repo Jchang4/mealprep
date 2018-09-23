@@ -1,14 +1,16 @@
 "use strict"
 
 import mongoose from 'mongoose'
-import joigoose from 'joigoose'
+import Joigoose from 'joigoose'
 
 import collectionName from './collection-name'
 import recipeApiProfileSchema from './schema'
 
+
 const recipeApiProfileMongooseSchema = new mongoose.Schema(
-    joigoose(mongoose).convert(recipeApiProfileSchema
-))
+    Joigoose(mongoose).convert(recipeApiProfileSchema),
+    { collection: collectionName }
+)
 
 export default mongoose.model(
     collectionName, 

@@ -7,6 +7,7 @@ import config from '../../config'
 
 function connect() {
     mongoose.connect(config.MONGO_CONNECTION_URI, { useNewUrlParser: true })
+    mongoose.set('useCreateIndex', true);
 }
 
 function close() {

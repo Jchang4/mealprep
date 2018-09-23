@@ -1,3 +1,3 @@
 "use strict"
 
-export default 'RecipeApiProfiles'
+export default 'RecipeApiProfile'

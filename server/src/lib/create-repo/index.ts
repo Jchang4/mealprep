@@ -2,11 +2,14 @@
 
 import { Model as MongooseModel } from 'mongoose'
 
-export default function createRepo(model : MongooseModel) {
+export default function createRepo(model) {
     return {
-        ...model,
-        find: (query : object) => model.find(query).lean().exec(),
-        findById: (query : object) => model.findById(query).lean().exec(),
-        save: (doc : MongooseModel) => model.save(doc).lean().exec(),
+        // ...model,
+        find: (query) => 
+            model.find(query).lean().exec(),
+        findById: (query : object) => 
+            model.findById(query).lean().exec(),
+        save: (doc : object) =>
+            model.save(doc).lean().exec(),
     }
 }

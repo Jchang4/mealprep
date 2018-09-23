@@ -14,6 +14,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/mongoose": "^5.2.17",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.4",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
@@ -26,6 +29,7 @@
     "express": "^4.16.3",
     "figlet": "^1.2.0",
     "joi": "^13.6.0",
+    "joi-objectid": "^2.0.0",
     "joigoose": "^4.0.2",
     "mongoose": "^5.2.17"
   }

@@ -5,22 +5,30 @@ import figlet from 'figlet'
 import config from './config'
 import mongoConnection from './lib/mongo-connection'
 
+import Promise from 'bluebird'
+import recipeApiProfileRepo from './services/recipe-api/recipe-api-profile/repo'
+import recipeApiEventRepo from './services/recipe-api/recipe-api-event/repo'
+
 
 const app = express();
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.get('*', async (req, res) => {
+    // console.log(await recipeApiProfileRepo.save({
+
+    // }))
+
+    res.send(await Promise.props({
+        recipeApiEvents: recipeApiEventRepo.find({}),
+        recipeApiProfiles: recipeApiProfileRepo.find({}),
+    }))
 });
 
 
-const server = app.listen(config.PORT, () => {
+app.listen(config.PORT, () => {
     mongoConnection.connect()
 
-    server.close(() => {
-        mongoConnection.close()
-    })
-
+    // Start Server
     console.log(figlet.textSync('Mealprep App', {
         font: 'Crawford'
     }))
