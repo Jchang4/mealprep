@@ -3,15 +3,14 @@
 import mongoose from 'mongoose'
 import Joigoose from 'joigoose'
 
-import collectionName from './collection-name'
 import recipeApiEventSchema from './schema'
 
 const recipeApiEventMongooseSchema = new mongoose.Schema(
     Joigoose(mongoose).convert(recipeApiEventSchema),
-    { collection: collectionName }
+    { collection: 'RecipeApiEvent' }
 )
 
 export default mongoose.model(
-    collectionName,
+    'RecipeApiEvent',
     recipeApiEventMongooseSchema
 )

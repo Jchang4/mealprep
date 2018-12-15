@@ -5,7 +5,7 @@ import figlet from 'figlet'
 import config from './config'
 import mongoConnection from './lib/mongo-connection'
 
-import Promise from 'bluebird'
+// import Bluebird from 'bluebird'
 import recipeApiProfileRepo from './services/recipe-api/recipe-api-profile/repo'
 import recipeApiEventRepo from './services/recipe-api/recipe-api-event/repo'
 
@@ -14,14 +14,11 @@ const app = express();
 
 
 app.get('*', async (req, res) => {
-    // console.log(await recipeApiProfileRepo.save({
-
+    res.json('Hello world')
+    // res.json(await Bluebird.props({
+    //     recipeApiEvents: recipeApiEventRepo.find({}),
+    //     recipeApiProfiles: recipeApiProfileRepo.find({}),
     // }))
-
-    res.send(await Promise.props({
-        recipeApiEvents: recipeApiEventRepo.find({}),
-        recipeApiProfiles: recipeApiProfileRepo.find({}),
-    }))
 });
 
 

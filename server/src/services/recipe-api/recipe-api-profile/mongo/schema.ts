@@ -30,6 +30,7 @@ export default Joi.object().keys({
             .description('Access token to use the API.'),
         applicationId: Joi.string().description('Application ID sent with each request (optional).'),
     }),
+    headers: Joi.object().description('Headers to be sent with the API request.'),
     apiUrl: Joi
         .string()
         .required()
