@@ -17,6 +17,10 @@ export default {
             lowercase: true,
             required: true,
         },
+        imageUrl: {
+            description: "Image of the recipe - only keep one so we don't flood their API with requests.",
+            type: String,
+        },
     },
     cookTime: {
         prep: {
