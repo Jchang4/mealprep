@@ -8,12 +8,14 @@ export default {
         originalUrl: {
             description: 'The url this recipe came from.',
             type: String,
+            required: true,
         },
         company: {
             description: 'Company this recipe came from - i.e. allrecipes, newyorktimes.',
             type: String,
             trim: true,
             lowercase: true,
+            required: true,
         },
     },
     cookTime: {
@@ -26,21 +28,35 @@ export default {
             type: Number,
         },
         totalTime: {
-            description: 'Total time to cook this recipe - taken from prep and cook times.',
+            description: 'Total time to cook this recipe in minutes.',
             type: Number,
-            set: (doc: any) => doc.cookTime.prep + doc.cookTime.cook,
         },
     },
     ingredients: {
         description: 'List of ingredients.',
         type: [String],
+        required: true,
     },
     instructions: {
         description: 'Instructions to cook recipe, in order',
         type: [String],
+        required: true,
     },
     notes: {
         description: 'Notes or advice for how to cook, store leftovers, clean-up easily, etc.',
         type: [String],
+    },
+    meta: {
+        description: 'Ratings, reviews, and other meta information about the recipe',
+        type: {
+            fiveStarReview: {
+                description: 'Number from 0 to 5 indicating 5-star review.',
+                type: Number,
+            },
+            creator: {
+                description: 'Username of the recipe creator',
+                type: String,
+            },
+        },
     },
 }
