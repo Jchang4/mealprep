@@ -17,36 +17,60 @@ class Spoonacular {
     this.remainingTinyRequests = -1;
   }
 
-  async getRecipeIdsFromQuery(query, number = 5) {
+  async getRecipeIdsFromQuery(
+    query,
+    { number = 5, offset = 0, cuisine, diet } = {
+      number: 5,
+      offset: 0
+    }
+  ) {
     const finalQuery = query.split(" ").join("+");
-    const res = await this.axios.get(
-      "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/autocomplete",
-      {
-        params: {
-          number,
-          query: encodeURIComponent(finalQuery)
-        }
-      }
-    );
-    this.setRemainingRequests(res.headers);
-    return res.data.map(({ id }) => id);
+    const params = {
+      query: finalQuery,
+      number,
+      offset,
+      limitLicense: false,
+      ranking: 2 // by relevance
+    };
+
+    try {
+      const res = await this.axios.get(
+        "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex",
+        { params }
+      );
+      this.setRemainingRequests(res.headers);
+      return res.data.results.map(({ id }) => id);
+    } catch (err) {
+      this.printRemainingRequests();
+      console.log(err);
+    }
   }
 
   async getRecipeDetails(recipeIds) {
     if (!recipeIds || !recipeIds.length)
       throw new Error("RecipeIds cannot be empty.");
-    const finalRecipeIds = recipeIds.join(",");
-    const res = await this.axios.get(
-      "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/informationBulk",
-      {
-        params: {
-          includeNutrition: false,
-          query: encodeURIComponent(finalRecipeIds)
-        }
-      }
+    const finalRecipeIds = recipeIds.slice(
+      0,
+      Math.min(recipeIds.length, this.remainingRequests)
     );
-    this.setRemainingRequests(res.headers);
-    return res.data;
+
+    try {
+      const res = await this.axios.get(
+        `https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/informationBulk?ids=${finalRecipeIds.join(
+          "%2C"
+        )}`,
+        {
+          params: {
+            includeNutrition: false
+          }
+        }
+      );
+      this.setRemainingRequests(res.headers);
+      return res.data;
+    } catch (err) {
+      this.printRemainingRequests();
+      console.log(err);
+    }
   }
 
   async saveToMongo(recipes) {
@@ -119,9 +143,11 @@ class Spoonacular {
   }
 
   setRemainingRequests(headers) {
-    this.remainingRequests = headers["x-ratelimit-requests-remaining"];
-    this.remainingResults = headers["x-ratelimit-results-remaining"];
-    this.remainingTinyRequests = headers["x-ratelimit-tinyrequests-remaining"];
+    this.remainingRequests = Number(headers["x-ratelimit-requests-remaining"]);
+    this.remainingResults = Number(headers["x-ratelimit-results-remaining"]);
+    this.remainingTinyRequests = Number(
+      headers["x-ratelimit-tinyrequests-remaining"]
+    );
   }
 
   printRemainingRequests() {

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   aisle: String,
   consitency: String,
   name: String,

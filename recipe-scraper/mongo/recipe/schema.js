@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   title: {
     description: "Title of recipe on the original site",
     type: String,
