@@ -27,8 +27,8 @@ export default {
       description: "Name of the API service this recipe came from",
       type: String
     },
-    apiId: {
-      description: "Id of the recipe used in the API",
+    recipeId: {
+      description: "Id of the recipe from an API or website",
       type: String
     }
   },

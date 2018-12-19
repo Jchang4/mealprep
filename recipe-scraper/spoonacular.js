@@ -2,7 +2,8 @@ const axios = require("axios");
 const P = require("bluebird");
 const R = require("ramda");
 
-const recipeModel = require("./recipe/model");
+const recipeModel = require("./mongo/recipe/model");
+const ingredientModel = require("./mongo/ingredient/model");
 
 class Spoonacular {
   constructor(appKey) {
@@ -49,6 +50,13 @@ class Spoonacular {
   }
 
   async saveToMongo(recipes) {
+    return P.all([
+      this.saveRecipesToMongo(recipes),
+      this.saveClassifiedIngredientsToMongo(recipes)
+    ]);
+  }
+
+  async saveRecipesToMongo(recipes) {
     if (!recipes)
       throw new Error(
         "Must provide array of Spoonacular Recipe Details results."
@@ -57,12 +65,17 @@ class Spoonacular {
     return P.all(recipes, recipe => {
       const instructions = R.pipe(
         R.pathOr([], ["analyzedInstructions", "steps"]),
-        R.map(({ step }) => step)
+        R.map(({ step }) => step),
+        R.filter(instr => !!instr)
       )(recipe);
+
       const ingredients = R.pipe(
         R.propOr([], "extendedIngredients"),
-        R.map(ingred => ingred.original || ingred.originalString)
+        R.map(ingred => ingred.original || ingred.originalString),
+        R.filter(ingred => !!ingred)
       )(recipe);
+
+      // Save Recipe to Mongo
       return recipeModel.create({
         title: recipe.title,
         source: {
@@ -70,7 +83,7 @@ class Spoonacular {
           company: new URL(recipe.sourceUrl).hostname,
           imageUrl: recipe.image,
           apiName: "spoonacular",
-          apiId: recipe.id
+          recipeId: recipe.id
         },
         cookTime: {
           prep: recipe.preparationMinutes,
@@ -83,10 +96,47 @@ class Spoonacular {
     });
   }
 
+  async saveClassifiedIngredientsToMongo(recipes) {
+    const allIngreds = R.pipe(
+      R.map(R.propOr([], "extendedIngredients")),
+      R.reduce((acc, ingreds) => acc.concat(ingreds), [])
+    )(recipes);
+
+    return P.map(allIngreds, ingred =>
+      ingredientModel.create({
+        aisle: ingred.aisle,
+        consitency: ingred.consitency,
+        name: ingred.name,
+        original: ingred.original,
+        amount: ingred.amount,
+        unit: ingred.unit,
+        meta: R.union(ingred.meta, ingred.metaInformation),
+        measures: {
+          us: ingred.us,
+          metric: ingred.metric
+        }
+      })
+    );
+  }
+
   setRemainingRequests(headers) {
     this.remainingRequests = headers["x-ratelimit-requests-remaining"];
     this.remainingResults = headers["x-ratelimit-results-remaining"];
     this.remainingTinyRequests = headers["x-ratelimit-tinyrequests-remaining"];
+  }
+
+  printRemainingRequests() {
+    console.log(
+      JSON.stringify(
+        {
+          remainingRequests: this.remainingRequests,
+          remainingResults: this.remainingResults,
+          remainingTinyRequests: this.remainingTinyRequests
+        },
+        null,
+        4
+      )
+    );
   }
 }
 
