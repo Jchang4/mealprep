@@ -50,6 +50,10 @@ class Spoonacular {
   }
 
   async saveToMongo(recipes) {
+    if (!recipes)
+      throw new Error(
+        "Must provide array of Spoonacular Recipe Details results."
+      );
     return P.all([
       this.saveRecipesToMongo(recipes),
       this.saveClassifiedIngredientsToMongo(recipes)
@@ -57,12 +61,7 @@ class Spoonacular {
   }
 
   async saveRecipesToMongo(recipes) {
-    if (!recipes)
-      throw new Error(
-        "Must provide array of Spoonacular Recipe Details results."
-      );
-
-    return P.all(recipes, recipe => {
+    return P.map(recipes, recipe => {
       const instructions = R.pipe(
         R.pathOr([], ["analyzedInstructions", "steps"]),
         R.map(({ step }) => step),

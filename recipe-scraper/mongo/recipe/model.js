@@ -1,11 +1,8 @@
-"use strict"
+"use strict";
 
-import mongoose from 'mongoose'
-import recipeSchema from './schema'
+const mongoose = require("mongoose");
+const recipeSchema = require("./schema");
 
-const recipeMongooseSchema = new mongoose.Schema(recipeSchema)
+const recipeMongooseSchema = new mongoose.Schema(recipeSchema);
 
-export default mongoose.model(
-    'Recipe',
-    recipeMongooseSchema
-)
+module.exports = mongoose.model("Recipe", recipeMongooseSchema);

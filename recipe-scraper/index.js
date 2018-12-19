@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Spoonacular = require("./spoonacular");
 
@@ -17,23 +17,23 @@ async function main() {
   const queries = ["salmon"];
 
   for (let i = 0; i < queries.length; i++) {
-    if (
-      spoon.remainingRequests < 1 ||
-      spoon.remainingResults < 1 ||
-      spoon.remainingTinyRequests < 1
-    ) {
-      console.log("Ran out of API calls for the day!");
-      spoon.printRemainingRequests();
-      break;
-    }
-
     const q = queries[i];
     const recipeIds = await spoon.getRecipeIdsFromQuery(q, 1);
     const recipeDetails = await spoon.getRecipeDetails(recipeIds);
     await spoon.saveToMongo(recipeDetails);
     console.log(`Saved ${recipeDetails.length} recipes to Mongo!`);
     spoon.printRemainingRequests();
+    if (
+      spoon.remainingRequests < 1 ||
+      spoon.remainingResults < 1 ||
+      spoon.remainingTinyRequests < 1
+    ) {
+      console.log("Ran out of API calls for the day!");
+      break;
+    }
   }
+
+  return;
 }
 
 main();
