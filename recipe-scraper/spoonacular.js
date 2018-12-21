@@ -33,6 +33,9 @@ class Spoonacular {
       ranking: 2 // by relevance
     };
 
+    if (cuisine) params.cuisine = cuisine;
+    if (diet) params.diet = diet;
+
     try {
       const res = await this.axios.get(
         "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex",

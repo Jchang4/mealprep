@@ -25,10 +25,10 @@ async function main() {
   const spoon = new Spoonacular(appKey);
 
   const queries = [
-    { q: "chicken", number: 10, offset: 15 },
-    { q: "steak", number: 10, offset: 10 },
-    { q: "burger", number: 10, offset: 10 },
-    { q: "salad", number: 10, offset: 0 }
+    { q: "chicken", number: 10, offset: 25 },
+    { q: "steak", number: 10, offset: 20 },
+    { q: "burger", number: 10, offset: 20 },
+    { q: "salad", number: 10, offset: 10 }
   ];
 
   try {
