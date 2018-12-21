@@ -24,17 +24,25 @@ async function main() {
 
   const spoon = new Spoonacular(appKey);
 
-  const queries = ["chicken parmesan"];
+  const queries = [
+    { q: "chicken", number: 10, offset: 15 },
+    { q: "steak", number: 10, offset: 10 },
+    { q: "burger", number: 10, offset: 10 },
+    { q: "salad", number: 10, offset: 0 }
+  ];
 
   try {
     for (let i = 0; i < queries.length; i++) {
-      const q = queries[i];
-      console.log("Query:", q);
-      const recipeIds = await spoon.getRecipeIdsFromQuery(q, 5);
+      const query = queries[i];
+      console.log("Query:", query.q);
+      const recipeIds = await spoon.getRecipeIdsFromQuery(query.q, {
+        number: query.number,
+        offset: query.offset
+      });
       await delay(randomInterval());
       const recipeDetails = await spoon.getRecipeDetails(recipeIds);
+      spoon.printRemainingRequests();
       await spoon.saveToMongo(recipeDetails);
-      console.log(`Saved ${recipeDetails.length} recipes to Mongo!`);
       spoon.printRemainingRequests();
       console.log("  ------------------------");
       if (

@@ -78,10 +78,11 @@ class Spoonacular {
       throw new Error(
         "Must provide array of Spoonacular Recipe Details results."
       );
-    return P.all([
+    await P.all([
       this.saveRecipesToMongo(recipes),
       this.saveClassifiedIngredientsToMongo(recipes)
     ]);
+    console.log(`Saved ${recipes.length} recipes to Mongo!`);
   }
 
   async saveRecipesToMongo(recipes) {
@@ -125,21 +126,23 @@ class Spoonacular {
       R.reduce((acc, ingreds) => acc.concat(ingreds), [])
     )(recipes);
 
-    return P.map(allIngreds, ingred =>
-      ingredientModel.create({
-        aisle: ingred.aisle,
-        consitency: ingred.consitency,
-        name: ingred.name,
-        original: ingred.original,
-        amount: ingred.amount,
-        unit: ingred.unit,
-        meta: R.union(ingred.meta, ingred.metaInformation),
-        measures: {
-          us: ingred.us,
-          metric: ingred.metric
-        }
-      })
-    );
+    return P.map(allIngreds, ingred => ingredientModel.create(ingred));
+
+    // return P.map(allIngreds, ingred =>
+    //   ingredientModel.create({
+    //     aisle: ingred.aisle,
+    //     consitency: ingred.consitency,
+    //     name: ingred.name,
+    //     original: ingred.original,
+    //     amount: ingred.amount,
+    //     unit: ingred.unit,
+    //     meta: R.union(ingred.meta, ingred.metaInformation),
+    //     measures: {
+    //       us: ingred.us,
+    //       metric: ingred.metric
+    //     }
+    //   })
+    // );
   }
 
   setRemainingRequests(headers) {
