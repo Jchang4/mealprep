@@ -76,12 +76,12 @@ class Spoonacular {
   async getRecipeDetails(recipeIds) {
     if (!recipeIds || !recipeIds.length)
       throw new Error("RecipeIds cannot be empty.");
-    if (!this.remainingRequests || !this.remainingResults) {
+    if (this.remainingRequests < 1 || this.remainingResults < 1)
       throw new Error("Ran out of API calls for the day!");
-    }
+
     const finalRecipeIds = recipeIds.slice(
       0,
-      Math.min(this.remainingRequests, recipeIds.length)
+      Math.min(this.remainingResults, recipeIds.length)
     );
 
     const res = await this.axios.get(
@@ -89,9 +89,7 @@ class Spoonacular {
         "%2C"
       )}`,
       {
-        params: {
-          includeNutrition: false
-        }
+        params: { includeNutrition: false }
       }
     );
     this.setRemainingRequests(res.headers);
@@ -152,22 +150,6 @@ class Spoonacular {
     )(recipes);
 
     return P.map(allIngreds, ingred => ingredientModel.create(ingred));
-
-    // return P.map(allIngreds, ingred =>
-    //   ingredientModel.create({
-    //     aisle: ingred.aisle,
-    //     consitency: ingred.consitency,
-    //     name: ingred.name,
-    //     original: ingred.original,
-    //     amount: ingred.amount,
-    //     unit: ingred.unit,
-    //     meta: R.union(ingred.meta, ingred.metaInformation),
-    //     measures: {
-    //       us: ingred.us,
-    //       metric: ingred.metric
-    //     }
-    //   })
-    // );
   }
 
   setRemainingRequests(headers) {
