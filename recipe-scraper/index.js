@@ -25,41 +25,28 @@ async function main() {
   const spoon = new Spoonacular(appKey);
 
   const queries = [
-    { q: "chicken", number: 10, offset: 25 },
-    { q: "steak", number: 10, offset: 20 },
-    { q: "burger", number: 10, offset: 20 },
-    { q: "salad", number: 10, offset: 10 }
+    { q: "chicken", number: 20, offset: 142 },
+    { q: "steak", number: 10, offset: 80 },
+    { q: "burger", number: 10, offset: 80 },
+    { q: "salad", number: 10, offset: 100 },
+    { q: "pasta", number: 20, offset: 160 },
+    { q: "garlic", number: 20, offset: 160 },
+    { q: "salmon", number: 20, offset: 80 },
+    { q: "egg", number: 20, offset: 39 },
+    { q: "sausage", number: 20, offset: 40 }
   ];
 
-  try {
-    for (let i = 0; i < queries.length; i++) {
-      const query = queries[i];
-      console.log("Query:", query.q);
-      const recipeIds = await spoon.getRecipeIdsFromQuery(query.q, {
-        number: query.number,
-        offset: query.offset
-      });
-      await delay(randomInterval());
-      const recipeDetails = await spoon.getRecipeDetails(recipeIds);
-      spoon.printRemainingRequests();
-      await spoon.saveToMongo(recipeDetails);
-      spoon.printRemainingRequests();
-      console.log("  ------------------------");
-      if (
-        spoon.remainingRequests < 1 ||
-        spoon.remainingResults < 1 ||
-        spoon.remainingTinyRequests < 1
-      ) {
-        console.log("Ran out of API calls for the day!");
-        break;
-      }
-      await delay(randomInterval());
-    }
-  } catch (err) {
-    spoon.printRemainingRequests();
-    console.log(err);
+  for (let i = 0; i < queries.length; i++) {
+    const query = queries[i];
+    console.log("Query:", query.q);
+    const results = await spoon.getAndSaveRecipesToMongo(query.q, {
+      number: query.number,
+      offset: query.offset
+    });
+    await delay(1200);
+    queries[i].offset += results.length;
   }
-
+  console.log(JSON.stringify(queries));
   process.exit();
 }
 
