@@ -1,5 +1,8 @@
 import numpy as np
+import pandas as pd
+
 from .helpers import *
+
 
 """ Labels:
         NAME
@@ -12,9 +15,12 @@ from .helpers import *
 """
 
 # For development
+
+
 def create_mini_df(N=50000):
     sents = nyt_to_sents()
     save_pickle(sents[:N], './data/nyt_mini.pickle')
+
 
 def remove_useless_text_from_nyt(df):
     """ Remove unnecessary tokens from raw input
@@ -31,21 +37,26 @@ def remove_useless_text_from_nyt(df):
     """
     new_df = df.copy()
     # Input
-    new_df.input.replace(r'<.*>', '', regex=True, inplace=True) # remove html tags, ex: <h1>hello</h1>
-    new_df.input.replace(r'\(\)', '', regex=True, inplace=True) # remove parentheses, ex: '()'
+    # remove html tags, ex: <h1>hello</h1>
+    new_df.input.replace(r'<.*>', '', regex=True, inplace=True)
+    # remove parentheses, ex: '()'
+    new_df.input.replace(r'\(\)', '', regex=True, inplace=True)
     new_df.input.replace(r'\n', ' ', regex=True, inplace=True)
     new_df.input.replace('', None, regex=True, inplace=True)
     # Name
     new_df.name.replace(r'</.*>', '', regex=True, inplace=True)
     new_df.name.replace(r'<.*>', '', regex=True, inplace=True)
-    new_df.name.replace(r'\(\)', '', regex=True, inplace=True) # remove parentheses, ex: '()'
+    # remove parentheses, ex: '()'
+    new_df.name.replace(r'\(\)', '', regex=True, inplace=True)
     new_df.name.replace(r'\n', ' ', regex=True, inplace=True)
     new_df.name.replace('', None, regex=True, inplace=True)
     # Comment
     new_df.comment.replace(r'</.*>', '', regex=True, inplace=True)
     new_df.comment.replace(r'<.*>', '', regex=True, inplace=True)
-    new_df.comment.replace(r'\(\)', '', regex=True, inplace=True) # remove parentheses, ex: '()'
+    # remove parentheses, ex: '()'
+    new_df.comment.replace(r'\(\)', '', regex=True, inplace=True)
     return new_df
+
 
 def nyt_to_sents():
     df = get_dataframe('./data/nyt-ingredients-snapshot-2015.csv')
@@ -53,7 +64,7 @@ def nyt_to_sents():
     df = df.dropna(subset=['name', 'input'])
     sents = []
 
-    for i,r in df.iterrows():
+    for i, r in df.iterrows():
         row = []
         name = r['name']
         qty = str(r['qty'])
@@ -65,7 +76,7 @@ def nyt_to_sents():
 
         for w in words:
             if is_punctuation(w):
-                row.append((w,w))
+                row.append((w, w))
             elif w in name:
                 row.append((w, 'NAME'))
             elif w in qty:
@@ -81,18 +92,19 @@ def nyt_to_sents():
 
     return sents
 
-def my_data_to_sents():
-    ingredients = pd.read_pickle('./data/my_data_raw.pickle')
+
+def my_data_to_sents(file_path):
+    ingredients = pd.read_pickle(file_path)
     sents = []
 
-    for r in ingredients:
+    for i,r in ingredients.iterrows():
         row = []
         name = r['name']
         qty = str(r['quantity'])
-        unit = str(r['unit']) + ' {}s'.format(str(r['unit']))
+        unit = singularize(str(r['unit']))
         comment = str(r['comment'])
-        line = fractions_to_floats(r['original'])
-        words = word_tokenize(line)
+        originalString = fractions_to_floats(r['original'])
+        words = word_tokenize(originalString)
         for w in words:
             if is_punctuation(w):
                 row.append((w,w))
@@ -118,12 +130,13 @@ def sents_to_features(sents):
     for sent in sents:
         line = []
         history = []
-        for i,(word,label) in enumerate(sent):
-            line.append((ingredients_features(i,word,sent,history), label))
-            history.append((word,label))
+        for i, (word, label) in enumerate(sent):
+            line.append((ingredients_features(i, word, sent, history), label))
+            history.append((word, label))
         features.append(line)
 
     return features
+
 
 def ingredients_features(idx, word, all_words, history):
     """ Feature Function used to create feature sets
@@ -176,6 +189,7 @@ def ingredients_features(idx, word, all_words, history):
                 features['next_next_word'] = '<LAST>'
 
     return features
+
 
 def is_number(word):
     """

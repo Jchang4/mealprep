@@ -34,8 +34,8 @@ def create_ngram(trainset, testset):
     """
     ngram_classifier = NGramClassifier('NAME')
     ngram_classifier.train_model(trainset)
+    
     results = ngram_classifier.test_model(testset)
     print('N Gram Score test sents:', results*100)
-    # results = ngram_classifier.test_model(my_sents)
-    # print('N Gram Score my sents:', results*100)
+
     save_pickle(ngram_classifier, './classifiers/n_gram.pickle')

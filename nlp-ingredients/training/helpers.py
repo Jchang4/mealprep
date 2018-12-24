@@ -58,9 +58,6 @@ def get_dataframe(csv_url, random=True):
     """ Get dataframe and put in random order """
     df = pd.read_csv(csv_url)
     if random:
-        # https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sample.html
-        # Frac 1 => 100% of rows
-        # drop=True => don't create an index row containing the old indexes
         return df.sample(frac=1).reset_index(drop=True)
     return df
 

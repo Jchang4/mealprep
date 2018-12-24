@@ -17,41 +17,39 @@
     LinearSVC_classifier accuracy percent test sents: 90.60872218468714
     LinearSVC_classifier accuracy percent my sents: 85.41996830427892
 """
-import os, sys
+import os
+import sys
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+
+from training.create_clf import (create_bernoulliNB, create_linearSVC,
+                                 create_logistic, create_multiNB, create_NB,
+                                 create_sgd, create_vote)
 from training.sents import sents_to_features
 
 sents = pd.read_pickle('./data/nyt_sents.pickle')
-# my_sents = pd.read_pickle('./data/my_sents.pickle')
+my_sents = pd.read_pickle('./data/my_sents.pickle')
 
-np.random.shuffle(sents)
-# np.random.shuffle(my_sents)
-
-# sents = sents[0:20000] # use first 20,000
-size = int(len(sents) * 0.85)
-train_sents = sents[:size]
-test_sents = sents[size:]
-
-
-feature_train = [(f,l)
-    for sent in sents_to_features(train_sents)
+all_sents = sents + my_sents
+features = [(f,l)
+    for sent in np.array(sents_to_features(all_sents))
         for (f,l) in sent]
-feature_test = [(f,l)
-    for sent in sents_to_features(test_sents)
-        for (f,l) in sent]
-# feature_my = [(f,l)
-#     for sent in sents_to_features(my_sents)
-#         for (f,l) in sent]
 
+# Randomize
+np.random.shuffle(features)
 
-from training.create_clf import *
+# features = features[:20000]  # use first 20,000
+train_size = int(0.75 * len(features))
+train_features = features[:train_size]
+test_features = features[train_size:]
 
-create_NB(feature_train, feature_test)
-create_multiNB(feature_train, feature_test)
-create_bernoulliNB(feature_train, feature_test)
-create_logistic(feature_train, feature_test)
-create_sgd(feature_train, feature_test)
-create_linearSVC(feature_train, feature_test)
-create_vote(feature_test)
+create_NB(train_features, test_features)
+create_multiNB(train_features, test_features)
+create_bernoulliNB(train_features, test_features)
+create_logistic(train_features, test_features)
+create_sgd(train_features, test_features)
+create_linearSVC(train_features, test_features)
+create_vote(test_features)

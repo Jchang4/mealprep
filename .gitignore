@@ -1,4 +1,6 @@
 **/*.DS_STORE
+**/*node_modules
+**/*.env
 
 # Frontend
 frontend/src/tmp
@@ -18,3 +20,5 @@ server/dist
 # NLP Ingredients
 nlp-ingredients/data
 nlp-ingredients/env
+nlp-ingredients/**/*__pycache__
+nlp-ingredients/**/*.pytest_cache
