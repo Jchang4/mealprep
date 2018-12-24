@@ -76,13 +76,15 @@ class Spoonacular {
   async getRecipeDetails(recipeIds) {
     if (!recipeIds || !recipeIds.length)
       throw new Error("RecipeIds cannot be empty.");
-    if (this.remainingRequests < 1 || this.remainingResults < 1)
-      throw new Error("Ran out of API calls for the day!");
+    // if (this.remainingRequests < 1 || this.remainingResults < 1)
+    //   throw new Error("Ran out of API calls for the day!");
 
-    const finalRecipeIds = recipeIds.slice(
-      0,
-      Math.min(this.remainingResults, recipeIds.length)
-    );
+    // const finalRecipeIds = recipeIds.slice(
+    //   0,
+    //   Math.min(this.remainingResults, recipeIds.length)
+    // );
+
+    const finalRecipeIds = recipeIds;
 
     const res = await this.axios.get(
       `https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/informationBulk?ids=${finalRecipeIds.join(
@@ -153,6 +155,7 @@ class Spoonacular {
   }
 
   setRemainingRequests(headers) {
+    console.log(JSON.stringify(headers, null, 4));
     this.remainingRequests = Number(headers["x-ratelimit-requests-remaining"]);
     this.remainingResults = Number(headers["x-ratelimit-results-remaining"]);
     this.remainingTinyRequests = Number(
