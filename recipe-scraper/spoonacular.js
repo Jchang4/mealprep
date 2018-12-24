@@ -54,15 +54,15 @@ class Spoonacular {
       number,
       offset,
       limitLicense: false,
+      instructionsRequired: true,
       ranking: 2 // by relevance
     };
 
-    if (cuisine) params.cuisine = cuisine;
     if (diet) params.diet = diet;
 
     try {
       const res = await this.axios.get(
-        "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex",
+        "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search",
         { params }
       );
       this.setRemainingRequests(res.headers);
