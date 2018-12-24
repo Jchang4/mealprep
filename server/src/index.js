@@ -4,8 +4,14 @@ const app = express();
 // Environment Variables
 const { PORT } = require("./config");
 
-app.get("*", () => {
+// Services
+const recipeService = require("./services/recipe");
+
+app.use("/recipe", recipeService);
+
+app.get("*", (req, res) => {
   console.log("Hello World");
+  res.send("Hello World");
 });
 
 app.listen(PORT, () => {
