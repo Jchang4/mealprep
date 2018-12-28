@@ -41,10 +41,17 @@ features = [(f,l)
 # Randomize
 np.random.shuffle(features)
 
-# features = features[:20000]  # use first 20,000
+# features = features[:200000]  # use first 20,000
 train_size = int(0.75 * len(features))
 train_features = features[:train_size]
 test_features = features[train_size:]
+
+train_features = [(f,l)
+    for sent in np.array(sents_to_features(my_sents))
+        for (f,l) in sent]
+test_features = [(f,l)
+    for sent in np.array(sents_to_features(sents))
+        for (f,l) in sent]
 
 create_NB(train_features, test_features)
 create_multiNB(train_features, test_features)
