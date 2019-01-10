@@ -1,8 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+from api import classify_ingredient_app
+
 app = Flask(__name__)
-cors = CORS(app, resources={'*': {'origins': '*'}}) # TODO: frontend + api in origins
+app.register_blueprint(classify_ingredient_app)
+# TODO: frontend + api in origins
+cors = CORS(app, resources={'*': {'origins': '*'}})
+
 
 @app.route("/")
 def index():
@@ -10,6 +15,3 @@ def index():
         'status': 200,
         'data': 'Welcome to NLP Ingredients! :)',
     })
-
-# Get API Routes
-from nlp.api import *

@@ -1,2 +1,3 @@
-from .classify_ingredients import classify_ingredients_handler
-from .combine_ingredients import combine_ingredients_handler
+from .classify_ingredients import classify_ingredient_app
+
+# from .combine_ingredients import combine_ingredients_handler

@@ -2,6 +2,10 @@ from nltk import word_tokenize
 from training.sents import sents_to_features, is_punctuation
 from training.helpers import singularize
 
+import spacy
+
+def get_features_from_ingredients(ingredients):
+    pass
 
 def get_sents_from_ingredients(ingredients):
     tokens = [word_tokenize(i) for i in ingredients]
