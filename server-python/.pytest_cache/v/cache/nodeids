@@ -1,7 +1,0 @@
-[
-  "test/test_index_route.py::test_nlp_ingred",
-  "test/test_nlp_ingred_routes.py::test_add_nlp_ingred_with_force",
-  "test/test_nlp_ingred_routes.py::test_add_nlp_ingred_without_force",
-  "test/test_nlp_ingred_routes.py::test_classify_ingredient",
-  "test/test_nlp_ingred_routes.py::test_classify_ingredient_fail"
-]
