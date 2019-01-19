@@ -3,6 +3,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+from scrapers.helpers import remove_whitespace_and_newline_chars
+
 
 def get_title(soup):
     """ Get the title of the recipe """
@@ -23,10 +25,9 @@ def get_ingredients(soup):
 def get_cooking_instructions(soup):
     """ Get the cooking insutructions, prep time, cook time, and ready-in time """
     instructions = []
-    useless_spaces = re.compile(r"\s{2,}")
     for el in soup.find("ol", "recipe-directions__list").find_all("li", "step"):
         text = el.get_text()
-        instructions.append(re.sub(r"\s{2,}|\n", "", text))
+        instructions.append(remove_whitespace_and_newline_chars(text))
 
     return {
         "instructions": instructions,
@@ -36,13 +37,19 @@ def get_cooking_instructions(soup):
     }
 
 
-# def get_five_star_rating():
-#     """ Get the 5-star rating on the page """
-#     pass
+def get_five_star_rating(soup):
+    """ Get the 5-star rating on the page """
+    return soup.find("div", "rating-stars")["data-ratingstars"]
 
 
-# def get_footnote():
-#     pass
+def get_footnote(soup):
+    all_text = soup.find("section", "recipe-footnotes").find("ul").get_text()
+    footnote = []
+    for t in all_text:
+        formatted_t = remove_whitespace_and_newline_chars(t)
+        if t != "\n" and formatted_t:
+            footnote.append(formatted_t)
+    return footnote
 
 
 def get_recipe(url):
@@ -53,6 +60,15 @@ def get_recipe(url):
         "title": get_title(soup),
         "ingredients": get_ingredients(soup),
         "instructions": get_cooking_instructions(soup),
-        # "fiveStarRating": get_five_star_rating(soup),
-        # "footnote": get_footnote(soup),
+        "fiveStarRating": get_five_star_rating(soup),
+        "footnote": get_footnote(soup),
     }
+
+
+if __name__ == "__main__":
+    from pprint import pprint
+
+    recipe = get_recipe(
+        "https://www.allrecipes.com/recipe/190857/leftover-pancake-breakfast-sandwich"
+    )
+    pprint(recipe)

@@ -15,6 +15,7 @@ server-python/**/*.pytest_cache
 
 # Server
 server/env
+server/**/*.vscode
 
 
 # NLP Ingredients
