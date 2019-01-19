@@ -3,7 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-from scrapers.helpers import remove_whitespace_and_newline_chars
+from services.scrapers.helpers import remove_whitespace_and_newline_chars
 
 
 def get_title(soup):
