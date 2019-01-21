@@ -1,30 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import Routes from './routes';
-import 'set.prototype.tojson'; // polyfill for Set()
+import * as serviceWorker from './serviceWorker';
 
-// CSS Libs
-import './assets/libs/normalize.css';
-import './assets/scss/index.css';
+// CSS
+import './static/normalize-8.0.1.css'
 
-// Verify valid Server config
-import './config';
-
-// Redux
-import { Provider } from 'react-redux';
-import store from './redux/store';
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+// App
+import AppRouter from './pages/router'
 
 ReactDOM.render(
-  <MuiThemeProvider>
-    <Provider store={store}>
-      <Routes />
-    </Provider>
-  </MuiThemeProvider>,
-  document.getElementById('root')
+    <AppRouter />, 
+    document.getElementById('root')
 );
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();

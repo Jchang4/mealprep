@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 from services.scrapers.all_recipe.get_recipes_from_ingredients import (
     get_recipes_from_ingredients as get_recipes,
 )
 
 app = Flask(__name__)
+cors = CORS(app, resources={"*": {"origins": "*"}})
 
 
 @app.route("/recipes", methods=["GET"])
