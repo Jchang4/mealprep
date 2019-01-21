@@ -15,10 +15,10 @@ def get_recipes_from_ingredients(ingredients, num_results=5):
     return recipes
 
 
-if __name__ == "__main__":
-    from pprint import pprint
+# if __name__ == "__main__":
+#     from pprint import pprint
 
-    ingreds = ["eggs", "toast"]
-    recipes = get_recipes_from_ingredients(ingreds)
+#     ingreds = ["eggs", "toast"]
+#     recipes = get_recipes_from_ingredients(ingreds)
 
-    pprint(recipes)
+#     pprint(recipes)
