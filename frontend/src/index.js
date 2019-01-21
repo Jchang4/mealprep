@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
+// Redux
+import { Provider } from 'react-redux'
+import store from './app-state/store'
+
 // CSS
 import './static/normalize-8.0.1.css'
 
@@ -9,7 +13,9 @@ import './static/normalize-8.0.1.css'
 import AppRouter from './pages/router'
 
 ReactDOM.render(
-    <AppRouter />, 
+    <Provider store={store}>
+        <AppRouter />
+    </Provider>,
     document.getElementById('root')
 );
 

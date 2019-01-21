@@ -13,11 +13,12 @@ cors = CORS(app, resources={"*": {"origins": "*"}})
 def get_recipes_from_ingredients():
     ingredients = request.args.getlist("i")
     num_results = request.args.get("r", 5)
+
     if not ingredients:
         return jsonify(
             {"status": 400, "error": "Must provide at least one ingredient."}
         )
-    print(ingredients)
+
     recipes = get_recipes(ingredients, num_results=int(num_results))
     if recipes:
         return jsonify({"status": 200, "data": recipes})
