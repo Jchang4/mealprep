@@ -74,4 +74,5 @@ def get_recipe_details(url):
         "instructions": get_cooking_instructions(soup),
         "fiveStarRating": get_five_star_rating(soup),
         "footnote": get_footnote(soup),
+        "source": {"url": url, "source": "AllRecipe"},
     }
