@@ -3,12 +3,18 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-from services.scrapers.helpers import remove_whitespace_and_newline_chars
+
+def remove_whitespace_and_newline_chars(string):
+    """ Remove two or more spaces and new-line characters """
+    return re.sub(r"\s{2,}|\n", "", string)
 
 
 def get_title(soup):
     """ Get the title of the recipe """
-    return soup.find("h1", id="recipe-main-content").get_text()
+    el = soup.find("h1", id="recipe-main-content")
+    if el:
+        return el.get_text()
+    return ""
 
 
 def get_ingredients(soup):
@@ -24,16 +30,22 @@ def get_ingredients(soup):
 
 def get_cooking_instructions(soup):
     """ Get the cooking insutructions, prep time, cook time, and ready-in time """
+    els = soup.select("ol.recipe-directions__list li.step")
     instructions = []
-    for el in soup.find("ol", "recipe-directions__list").find_all("li", "step"):
-        text = el.get_text()
-        instructions.append(remove_whitespace_and_newline_chars(text))
+    for el in els:
+        t = el.get_text()
+        t = remove_whitespace_and_newline_chars(t)
+        instructions.append(t)
+
+    prep_time = soup.find("time", itemprop="prepTime")
+    cook_time = soup.find("time", itemprop="cookTime")
+    total_time = soup.find("time", itemprop="totalTime")
 
     return {
         "instructions": instructions,
-        "prepTime": soup.find("time", itemprop="prepTime").get_text(),
-        "cookTime": soup.find("time", itemprop="cookTime").get_text(),
-        "readyIn": soup.find("time", itemprop="totalTime").get_text(),
+        "prepTime": prep_time.get_text() if prep_time else "",
+        "cookTime": cook_time.get_text() if cook_time else "",
+        "totalTime": total_time.get_text() if total_time else "",
     }
 
 
@@ -43,16 +55,16 @@ def get_five_star_rating(soup):
 
 
 def get_footnote(soup):
-    all_text = soup.find("section", "recipe-footnotes").find("ul").get_text()
+    els = soup.select("section.recipe-footnotes ul")
     footnote = []
-    for t in all_text:
-        formatted_t = remove_whitespace_and_newline_chars(t)
-        if t != "\n" and formatted_t:
-            footnote.append(formatted_t)
+    for e in els:
+        t = e.get_text()
+        t = remove_whitespace_and_newline_chars(t)
+        footnote.append(t)
     return footnote
 
 
-def get_recipe(url):
+def get_recipe_details(url):
     """ Webscrape recipe information from AllRecipe url """
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -63,12 +75,3 @@ def get_recipe(url):
         "fiveStarRating": get_five_star_rating(soup),
         "footnote": get_footnote(soup),
     }
-
-
-if __name__ == "__main__":
-    from pprint import pprint
-
-    recipe = get_recipe(
-        "https://www.allrecipes.com/recipe/190857/leftover-pancake-breakfast-sandwich"
-    )
-    pprint(recipe)

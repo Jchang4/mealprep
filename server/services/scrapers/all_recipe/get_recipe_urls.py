@@ -2,16 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_search_url(ingreds):
-    """ Use list of ingredients in AllRecipe query parameters """
-    return (
-        f"https://www.allrecipes.com/search/results/?sort=re&wt={'%20'.join(ingreds)}"
-    )
-
-
 def get_recipe_urls(ingreds):
-    """ Given a list of ingredients, return a list of AllRecipe recipe urls """
-    search_url = get_search_url(ingreds)
+    """ Given a list of ingredients, return a list of AllRecipe recipe urls 
+        The recipe urls are the urls for the individual recipes, where information
+        like ingredients, instructions, and cooking time can be found. """
+    search_url = (
+        f"https://www.allrecipes.com/search/results/?sort=p&wt={'%20'.join(ingreds)}"
+    )
     results_page = requests.get(search_url)
     soup = BeautifulSoup(results_page.text, "html.parser")
 
