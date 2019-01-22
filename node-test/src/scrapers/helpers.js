@@ -33,3 +33,10 @@ exports.removeWhiteSpace = function removeWhiteSpace(s) {
 exports.asQueryList = function asQueryList(items) {
   return items.join("%20");
 };
+
+exports.asArray = function asArray(item) {
+  if (!Array.isArray(item)) {
+    return [item];
+  }
+  return item;
+};

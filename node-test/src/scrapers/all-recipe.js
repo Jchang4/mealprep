@@ -1,5 +1,4 @@
 "use strict";
-const delay = require("delay");
 const { getHtml, removeWhiteSpace } = require("./helpers");
 
 class AllRecipeScraper {
@@ -25,30 +24,18 @@ class AllRecipeScraper {
     });
   }
 
-  async staggerNGetRecipesDetails(urls) {
-    const recipes = [];
-    for (let i = 0; i < urls.length; i++) {
-      let r = await this.getRecipeDetails(urls[i]);
-      recipes.push(r);
-      delay(1000);
-    }
-
-    return recipes;
-  }
-
   async getRecipeDetails(url) {
     const $ = await getHtml(url);
-
     return {
       title: this.getTitle($),
       imgUrl: this.getImgUrl($),
-      ingredients: this.getIngredients($),
-      instructions: this.getCookingInstructions($),
+      // ingredients: this.getIngredients($),
+      // instructions: this.getCookingInstructions($),
       cookingTime: this.getCookingTime($),
       fiveStarRating: this.getFiveStarRating($),
       footnote: this.getFootNote($),
       source: {
-        originalUrl: url,
+        recipeUrl: url,
         source: "AllRecipe"
       }
     };
@@ -90,7 +77,8 @@ class AllRecipeScraper {
   }
 
   getFiveStarRating($) {
-    return $(".rating-stars").attr("data-ratingstars");
+    const fiveStarRating = $(".rating-stars").attr("data-ratingstars");
+    return fiveStarRating ? Number(fiveStarRating) : undefined;
   }
 
   getFootNote($) {
