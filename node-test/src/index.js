@@ -22,6 +22,6 @@ app.get("/recipe", async (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Starting App on PORT: 3000");
+app.listen(5000, () => {
+  console.log("Starting App on PORT: 5000");
 });

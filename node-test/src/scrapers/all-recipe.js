@@ -41,6 +41,7 @@ class AllRecipeScraper {
 
     return {
       title: this.getTitle($),
+      imgUrl: this.getImgUrl($),
       ingredients: this.getIngredients($),
       instructions: this.getCookingInstructions($),
       cookingTime: this.getCookingTime($),
@@ -55,6 +56,10 @@ class AllRecipeScraper {
 
   getTitle($) {
     return $("#recipe-main-content").text();
+  }
+
+  getImgUrl($) {
+    return $("div.hero-photo__wrap a img").attr("src");
   }
 
   getIngredients($) {
