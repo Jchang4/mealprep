@@ -29,3 +29,7 @@ exports.getHtml = async function getHtml(url) {
 exports.removeWhiteSpace = function removeWhiteSpace(s) {
   return s.replace(/\s{2,}/, "");
 };
+
+exports.asQueryList = function asQueryList(items) {
+  return items.join("%20");
+};

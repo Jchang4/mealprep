@@ -45,7 +45,11 @@ class AllRecipeScraper {
       instructions: this.getCookingInstructions($),
       cookingTime: this.getCookingTime($),
       fiveStarRating: this.getFiveStarRating($),
-      footnote: this.getFootNote($)
+      footnote: this.getFootNote($),
+      source: {
+        originalUrl: url,
+        source: "AllRecipe"
+      }
     };
   }
 
