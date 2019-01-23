@@ -1,22 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
 
 // Redux
-import { Provider } from 'react-redux'
-import store from './app-state/store'
+import { Provider } from "react-redux";
+import store from "./app-state/store";
 
 // CSS
-import './static/normalize-8.0.1.css'
+import "./static/normalize-8.0.1.css";
+import "./static/index.css";
 
 // App
-import AppRouter from './pages/router'
+import AppRouter from "./pages/router";
 
 ReactDOM.render(
-    <Provider store={store}>
-        <AppRouter />
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

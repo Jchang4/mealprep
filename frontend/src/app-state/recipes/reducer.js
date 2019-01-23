@@ -1,34 +1,38 @@
-import update from 'immutability-helper';
-import { toObject } from '../helpers';
+import update from "immutability-helper";
+import { toObject } from "../helpers";
 
 import {
-  ADD_N_RECIPES,
+  NEW_RECIPES,
   ADD_RECIPE,
   REMOVE_RECIPE,
-  UPDATE_RECIPE,
-} from './constants';
+  UPDATE_RECIPE
+} from "./constants";
 
 const INITIAL_RECIPE_STATE = {};
 
-function recipeReducer(state=INITIAL_RECIPE_STATE, action) {
+function recipeReducer(state = INITIAL_RECIPE_STATE, action) {
   switch (action.type) {
-
-    case ADD_N_RECIPES:
+    case NEW_RECIPES:
       return update(state, {
-        $merge: toObject(action.payload, 'recipe_id')
+        $merge: action.payload.reduce(
+          (obj, recipe) =>
+            Object.assign(obj, { [recipe.source.recipeUrl]: recipe }),
+          {}
+        )
       });
 
     case ADD_RECIPE:
       return update(state, {
-        [action.payload.recipe_id]: { $set: action.payload }
+        [action.payload.source.recipeUrl]: { $set: action.payload }
       });
 
     case REMOVE_RECIPE:
+      // Remove by url
       return update(state, { $unset: [action.payload] });
 
     case UPDATE_RECIPE:
       return update(state, {
-        [action.payload.recipe_id]: { $merge: action.payload }
+        [action.payload.source.recipeUrl]: { $merge: action.payload }
       });
 
     default:
