@@ -29,8 +29,8 @@ class AllRecipeScraper {
     return {
       title: this.getTitle($),
       imgUrl: this.getImgUrl($),
-      // ingredients: this.getIngredients($),
-      // instructions: this.getCookingInstructions($),
+      ingredients: this.getIngredients($),
+      instructions: this.getCookingInstructions($),
       cookingTime: this.getCookingTime($),
       fiveStarRating: this.getFiveStarRating($),
       footnote: this.getFootNote($),
