@@ -2,6 +2,9 @@ import React from "react";
 import * as R from "ramda";
 // import getRecipesFromIngredients from "../api/get-recipes-from-ingredients";
 
+// Containers
+import RecipeSearchBar from "containers/recipe-search-bar";
+
 // Components
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +21,10 @@ class Recipe extends React.Component {
     console.log(recipesArr);
     return (
       <div>
-        <Typography variant="h1">Select Recipes</Typography>
+        <Typography variant="h1">Pick recipes</Typography>
+        <div style={{ marginTop: 16 }}>
+          <RecipeSearchBar />
+        </div>
         <Grid container spacing={16}>
           <Card />
         </Grid>

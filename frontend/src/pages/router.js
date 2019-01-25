@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 // Pages
-import Home from "./home";
+// import Home from "./home";
 import Recipes from "./recipes";
 
 const AppRouter = () => (
