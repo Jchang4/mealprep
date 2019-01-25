@@ -10,7 +10,7 @@ app.get("/recipe", async (req, res) => {
   const offset = req.query.offset || 0;
 
   console.log(
-    `Getting ${numResults} results per scraper for ingredients: ${ingredients}`
+    `Getting ${numResults} results with offset ${offset} per scraper for ingredients: ${ingredients}`
   );
 
   try {

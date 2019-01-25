@@ -19,12 +19,14 @@ async function staggerNGetRecipesDetails({
 }) {
   const recipes = [];
   for (let i = 0; i < urls.length; i++) {
-    recipes.push(getRecipeDetails(urls[i]));
+    const r = await getRecipeDetails(urls[i]);
+    recipes.push(r);
+    console.log(`Scraped ${r.title} from ${r.source.source}`);
     if (i < urls.length - 1) {
       await delay(staggerDelay);
     }
   }
-  return P.all(recipes);
+  return recipes;
 }
 
 module.exports = async ({ ingredients, numResults, offset }) => {

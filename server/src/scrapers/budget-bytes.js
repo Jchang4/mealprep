@@ -46,7 +46,7 @@ function getImgUrl($) {
     img.attr("data-lazy-srcset") ||
     img.attr("data-lazy-src") ||
     img.attr("src");
-  return imgUrl.split()[0];
+  return imgUrl.split(" ")[0];
 }
 
 function getIngredients($) {
