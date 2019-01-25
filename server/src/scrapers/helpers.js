@@ -12,7 +12,7 @@ exports.getHtml = async function getHtml(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url, {
-    timeout: 30000,
+    timeout: 60000,
     waitUntil: "networkidle2"
   });
   const html = await page.content();

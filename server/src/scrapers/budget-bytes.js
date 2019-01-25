@@ -42,9 +42,11 @@ function getTitle($) {
 
 function getImgUrl($) {
   const img = $("div.wprm-recipe-image img");
-  return (
-    img.attr("data-lazy-srcset") || img.attr("data-lazy-src") || img.attr("src")
-  );
+  const imgUrl =
+    img.attr("data-lazy-srcset") ||
+    img.attr("data-lazy-src") ||
+    img.attr("src");
+  return imgUrl.split()[0];
 }
 
 function getIngredients($) {

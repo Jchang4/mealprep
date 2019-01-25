@@ -27,28 +27,22 @@ async function staggerNGetRecipesDetails({
   return P.all(recipes);
 }
 
-module.exports = async (ingredients, numResults = 5) => {
+module.exports = async ({ ingredients, numResults, offset }) => {
   const i = asArray(ingredients);
 
   const responses = await P.map(scrapers, async ({ scraper, staggerDelay }) => {
     const recipeUrls = await scraper.getRecipeUrlsFromIngredients(i);
     return staggerNGetRecipesDetails({
       getRecipeDetails: url => scraper.getRecipeDetails(url),
-      urls: recipeUrls.slice(0, numResults),
+      urls: recipeUrls.slice(offset, offset + numResults),
       staggerDelay
     });
   });
 
   // Flatten results
-  return responses
-    .reduce((acc, r) => acc.concat(r), [])
-    .sort((a, b) => {
-      if (b && a) {
-        return b.fiveStarRating - a.fiveStarRating;
-      } else if (b) {
-        return b;
-      } else {
-        return a;
-      }
-    });
+  const recipes = responses.reduce((acc, r) => acc.concat(r), []);
+
+  console.log(`Sending ${recipes.length} recipes.`);
+
+  return recipes;
 };

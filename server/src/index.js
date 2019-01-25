@@ -7,15 +7,19 @@ const scraper = require("./scrapers");
 app.get("/recipe", async (req, res) => {
   const ingredients = req.query.i;
   const numResults = req.query.r || 5;
+  const offset = req.query.offset || 0;
 
-  console.log("Getting recipes for ingredients:", ingredients);
+  console.log(
+    `Getting ${numResults} results per scraper for ingredients: ${ingredients}`
+  );
 
   try {
-    const recipes = await scraper(ingredients, numResults);
+    const recipes = await scraper({ ingredients, numResults, offset });
 
+    res.set("Access-Control-Allow-Origin", "*");
     res.json({
       status: 200,
-      data: recipes
+      recipes
     });
   } catch (err) {
     console.log(err);
