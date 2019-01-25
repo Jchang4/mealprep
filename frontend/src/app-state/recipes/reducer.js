@@ -1,5 +1,4 @@
 import update from "immutability-helper";
-import { toObject } from "../helpers";
 
 import {
   ADD_N_RECIPES,
@@ -9,7 +8,8 @@ import {
   CLEAR_RECIPES
 } from "./constants";
 
-const INITIAL_RECIPE_STATE = {};
+import DUMMY_STATE from "./DUMMY_DATA";
+const INITIAL_RECIPE_STATE = DUMMY_STATE;
 
 function listOfRecipesToObject(recipes) {
   return recipes.reduce(
