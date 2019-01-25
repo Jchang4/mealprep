@@ -8,12 +8,22 @@ app.get("/recipe", async (req, res) => {
   const ingredients = req.query.i;
   const numResults = req.query.r || 5;
 
-  const recipes = await scraper(ingredients, numResults);
+  console.log("Getting recipes for ingredients:", ingredients);
 
-  return res.json({
-    status: 200,
-    data: recipes
-  });
+  try {
+    const recipes = await scraper(ingredients, numResults);
+
+    res.json({
+      status: 200,
+      data: recipes
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      status: 500,
+      error: err
+    });
+  }
 });
 
 app.listen(5000, () => {

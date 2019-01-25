@@ -4,13 +4,18 @@ const delay = require("delay");
 
 const { asArray } = require("./helpers");
 
-const AllRecipeScraper = require("./all-recipe");
-const BudgetBytesScraper = require("./budget-bytes");
+const allRecipeScraper = require("./all-recipe");
+const budgetBytesScraper = require("./budget-bytes");
+
+const scrapers = [
+  { scraper: allRecipeScraper, staggerDelay: 1000 },
+  { scraper: budgetBytesScraper, staggerDelay: 100 }
+];
 
 async function staggerNGetRecipesDetails({
   getRecipeDetails,
   urls,
-  staggerDelay = 1000
+  staggerDelay
 }) {
   const recipes = [];
   for (let i = 0; i < urls.length; i++) {
@@ -19,21 +24,16 @@ async function staggerNGetRecipesDetails({
       await delay(staggerDelay);
     }
   }
-  return await P.all(recipes);
+  return P.all(recipes);
 }
 
 module.exports = async (ingredients, numResults = 5) => {
   const i = asArray(ingredients);
-  const scrapers = [
-    { Scraper: AllRecipeScraper, staggerDelay: 1000 },
-    { Scraper: BudgetBytesScraper, staggerDelay: 100 }
-  ];
 
-  const responses = await P.map(scrapers, async ({ Scraper, staggerDelay }) => {
-    const s = new Scraper();
-    const recipeUrls = await s.getRecipeUrlsFromIngredients(i);
-    return await staggerNGetRecipesDetails({
-      getRecipeDetails: url => s.getRecipeDetails(url),
+  const responses = await P.map(scrapers, async ({ scraper, staggerDelay }) => {
+    const recipeUrls = await scraper.getRecipeUrlsFromIngredients(i);
+    return staggerNGetRecipesDetails({
+      getRecipeDetails: url => scraper.getRecipeDetails(url),
       urls: recipeUrls.slice(0, numResults),
       staggerDelay
     });
