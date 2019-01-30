@@ -3,7 +3,6 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 // Components
-import grey from "@material-ui/core/colors/grey";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import GradeIcon from "@material-ui/icons/Grade";
 import Typography from "@material-ui/core/Typography";
@@ -47,19 +46,16 @@ const RecipeCard = ({
   imgUrl,
   cookingTime: { totalTime },
   fiveStarRating,
-  source
+  source: { source: recipeWebsiteSource }
 }: {
   classes: Object,
   title: string,
   imgUrl?: string,
   cookingTime?: {
-    prepTime?: string,
-    cookTime?: string,
     totalTime?: string
   },
   fiveStarRating: number,
   source: {
-    recipeUrl: string,
     source: string
   }
 }) => {
@@ -86,7 +82,7 @@ const RecipeCard = ({
             <div />
           )}
           {/* Source - AllRecipe, BudgetBytes */}
-          <Typography variant="body2">{source.source}</Typography>
+          <Typography variant="body2">{recipeWebsiteSource}</Typography>
           {/* Rating */}
           <Row>
             <GradeIcon className={classes.icon} fontSize="small" />

@@ -3,8 +3,6 @@ import React from "react";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 
-import Paper from "@material-ui/core/Paper";
-
 const styles = theme => ({
   circularContainer: {
     boxShadow: theme.shadows["9"],
