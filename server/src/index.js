@@ -6,8 +6,8 @@ const scraper = require("./scrapers");
 
 app.get("/recipe", async (req, res) => {
   const ingredients = req.query.i;
-  const numResults = req.query.r || 5;
-  const offset = req.query.offset || 0;
+  const numResults = Number(req.query.r) || 5;
+  const offset = Number(req.query.offset) || 0;
 
   console.log(
     `Getting ${numResults} results with offset ${offset} per scraper for ingredients: ${ingredients}`

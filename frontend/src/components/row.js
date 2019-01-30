@@ -1,10 +1,11 @@
 // @flow
 import React from "react";
 
-const Flex = ({
+import Flex from "./flex";
+
+const Row = ({
   justifyContent = "flex-start",
   alignItems = "flex-start",
-  flexDirection = "row",
   flexWrap = "wrap",
   className = "",
   style = {},
@@ -17,25 +18,21 @@ const Flex = ({
     | "space-around"
     | "space-between",
   alignItems: "baseline" | "center" | "end" | "flex-start" | "flex-end",
-  flexDirection: "row" | "column",
   flexWrap: "wrap" | "nowrap",
   className: string,
   style: object,
   children: any
 }) => (
-  <div
+  <Flex
+    flexDirection="row"
+    justifyContent={justifyContent}
+    alignItems={alignItems}
+    flexWrap={flexWrap}
     className={className}
-    style={{
-      ...style,
-      display: "flex",
-      justifyContent,
-      alignItems,
-      flexDirection,
-      flexWrap
-    }}
+    style={style}
   >
     {children}
-  </div>
+  </Flex>
 );
 
-export default Flex;
+export default Row;

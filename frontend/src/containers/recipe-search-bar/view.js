@@ -49,7 +49,10 @@ class RecipeSearchBar extends React.Component {
 
   handleTextFieldChange(ingredients) {
     this.setState({
-      ingredients: ingredients.split(/\s+|[,]/).filter(i => !!i)
+      ingredients: ingredients
+        .split(",")
+        .map(i => i.trim())
+        .filter(i => !!i)
     });
   }
 
