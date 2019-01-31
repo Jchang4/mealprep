@@ -4,8 +4,6 @@ import { getRecipesByIngredientsFromApi } from "api";
 
 import { ADD_N_RECIPES } from "./constants";
 
-import { getRecipes } from "./selectors";
-
 export function getRecipesByIngredients(ingredients, numResults = 7) {
   return async (dispatch, _) => {
     const requests = [];
