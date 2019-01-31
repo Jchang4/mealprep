@@ -3,14 +3,11 @@ const delay = require("delay");
 
 const Spoonacular = require("./spoonacular");
 
-const appKey = "R4qXkljqEFmshz0SUqVhKX9cXwdgp1JsKxEjsnKdvZlznrS5H1";
+const appKey = process.env.SPOONACULAR_KEY;
 const mongoConnectionUri = "mongodb://0.0.0.0:27017/mealprep";
 
 async function main() {
-  mongoose.connect(
-    mongoConnectionUri,
-    { useNewUrlParser: true }
-  );
+  mongoose.connect(mongoConnectionUri, { useNewUrlParser: true });
   mongoose.set("useCreateIndex", true);
 
   const spoon = new Spoonacular(appKey);
