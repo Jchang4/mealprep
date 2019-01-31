@@ -1,3 +1,7 @@
 body {
     backdrop-color: #fafafa;
 }
+
+.fancy-title {
+    font-family: 'Pacifico', cursive;
+}

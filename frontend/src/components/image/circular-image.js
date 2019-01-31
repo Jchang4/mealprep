@@ -5,7 +5,6 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   circularContainer: {
-    boxShadow: theme.shadows["9"],
     borderRadius: "50%",
     overflow: "hidden"
   },

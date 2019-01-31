@@ -76,18 +76,18 @@ function getCookingInstructions($) {
 
 function getCookingTime($) {
   const prepTime = $("div.wprm-recipe-prep-time-container")
-      .find(".wprm-recipe-time")
-      .text()
+    .find(".wprm-recipe-time")
+    .text();
   const cookTime = $("div.wprm-recipe-cook-time-container")
-      .find(".wprm-recipe-time")
-      .text()
+    .find(".wprm-recipe-time")
+    .text();
   const totalTime = $("div.wprm-recipe-total-time-container")
-      .find(".wprm-recipe-time")
-      .text()
+    .find(".wprm-recipe-time")
+    .text();
   return {
     prepTime: prepTime.replace("hr", "h").replace("mins", "m"),
-    cookTime: cookTime.replace("hr", "h").replace("mins", "m"),,
-    totalTime: totalTime.replace("hr", "h").replace("mins", "m"),
+    cookTime: cookTime.replace("hr", "h").replace("mins", "m"),
+    totalTime: totalTime.replace("hr", "h").replace("mins", "m")
   };
 }
 

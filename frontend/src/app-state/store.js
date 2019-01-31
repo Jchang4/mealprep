@@ -3,9 +3,11 @@ import thunkMiddleware from "redux-thunk";
 
 // Reducers
 import recipesReducer from "./recipes/reducer";
+import selectedRecipesReducer from "./selected-recipes/reducer";
 
 const reducer = combineReducers({
-  recipes: recipesReducer
+  recipes: recipesReducer,
+  selectedRecipes: selectedRecipesReducer
 });
 
 // Middleware

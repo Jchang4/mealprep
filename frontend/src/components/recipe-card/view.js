@@ -1,6 +1,10 @@
 // @flow
 import React from "react";
+import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+
+// Containers
+import SelectRecipeButton from "containers/buttons/select-recipe";
 
 // Components
 import AlarmIcon from "@material-ui/icons/Alarm";
@@ -10,45 +14,75 @@ import Row from "components/row";
 import CircularImage from "components/image/circular-image";
 
 const styles = theme => ({
+  selected: {
+    "& $textContainer": {
+      border: "1px solid #00bcd4",
+      marginTop: -17,
+      paddingLeft: 2 * theme.spacing.unit - 1,
+      paddingRight: 2 * theme.spacing.unit - 1
+    }
+  },
   container: {
     width: 300,
     margin: 2 * theme.spacing.unit,
+    // replace with react-spring?
     "&:hover": {
-      cursor: "pointer"
+      cursor: "pointer",
+      "& $textContainer": {
+        boxShadow: theme.shadows[8]
+      },
+      "& $imageContainer": {
+        boxShadow: theme.shadows[15],
+        marginTop: -25
+      },
+      "& $image": {
+        height: 225,
+        width: 225
+      }
     }
   },
   textContainer: {
     borderRadius: theme.shape.borderRadius,
     boxShadow: theme.shadows[1],
-    marginTop: -2.25 * theme.spacing.unit,
-    padding: `${2.5 * theme.spacing.unit}px ${2 * theme.spacing.unit}px`
+    padding: `${2.5 * theme.spacing.unit}px ${2 * theme.spacing.unit}px`,
+    // paddingTop: 125,
+    // marginTop: -115,
+    marginTop: -15,
+    transition: "box-shadow 200ms ease-in"
+  },
+  imageContainer: {
+    boxShadow: theme.shadows["6"],
+    transition: "box-shadow 150ms ease-out, margin-top 150ms ease-out"
   },
   image: {
     margin: "0 auto",
-    height: 150,
-    width: 150,
-    [theme.breakpoints.up("sm")]: {
-      height: 225,
-      width: 225
-    }
+    height: 200,
+    width: 200,
+    transition: "height 150ms ease-out, width 150ms ease-out"
   },
   title: {
     height: 7 * theme.spacing.unit
   },
   icon: {
     marginRight: theme.spacing.unit / 2
+  },
+  selectRecipeButton: {
+    marginTop: 2 * theme.spacing.unit
   }
 });
 
 const RecipeCard = ({
-  classes,
+  selectedRecipeIds,
+  recipeId,
   title,
   imgUrl,
   cookingTime: { totalTime },
   fiveStarRating,
-  source: { source: recipeWebsiteSource }
+  source: { source: recipeWebsiteSource },
+  classes
 }: {
-  classes: Object,
+  selectedRecipeIds: string[],
+  recipeId: string,
   title: string,
   imgUrl?: string,
   cookingTime?: {
@@ -57,17 +91,28 @@ const RecipeCard = ({
   fiveStarRating: number,
   source: {
     source: string
-  }
+  },
+  classes: Object
 }) => {
   const hasCookingTime = !!totalTime;
+  const isSelected = selectedRecipeIds.includes(recipeId);
   return (
-    <div className={classes.container}>
+    <div
+      className={classNames(classes.container, {
+        [classes.selected]: isSelected
+      })}
+    >
       <div className={classes.image}>
-        <CircularImage imgClassName={classes.image} src={imgUrl} alt={title} />
+        <CircularImage
+          containerClassName={classes.imageContainer}
+          imgClassName={classes.image}
+          src={imgUrl}
+          alt={title}
+        />
       </div>
 
       {/* Text */}
-      <div className={classes.textContainer} justifyContent="space-between">
+      <div className={classes.textContainer}>
         <Typography className={classes.title} variant="title">
           {title}
         </Typography>
@@ -88,6 +133,9 @@ const RecipeCard = ({
             <GradeIcon className={classes.icon} fontSize="small" />
             <Typography variant="body1">{fiveStarRating.toFixed(2)}</Typography>
           </Row>
+        </Row>
+        <Row justifyContent="flex-end" className={classes.selectRecipeButton}>
+          <SelectRecipeButton recipeId={recipeId} />
         </Row>
       </div>
     </div>
