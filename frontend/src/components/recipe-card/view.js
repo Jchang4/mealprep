@@ -8,7 +8,6 @@ import SelectRecipeButton from "containers/buttons/select-recipe";
 
 // Components
 import AlarmIcon from "@material-ui/icons/Alarm";
-import GradeIcon from "@material-ui/icons/Grade";
 import Typography from "@material-ui/core/Typography";
 import Row from "components/row";
 import FiveStarRating from "components/five-star-rating";

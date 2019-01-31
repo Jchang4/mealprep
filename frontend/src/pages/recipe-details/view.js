@@ -3,7 +3,6 @@ import React from "react";
 // Components
 import Row from "components/row";
 import FancyTitle from "components/fancy-title";
-import CircularImage from "components/image/circular-image";
 import FiveStarRating from "components/five-star-rating";
 import JumbotronImg from "./components/jumbotron-img";
 
