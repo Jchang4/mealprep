@@ -5,3 +5,8 @@ body {
 .fancy-title {
     font-family: 'Pacifico', cursive;
 }
+
+/* Text */
+.text-center {
+    text-align: center;
+}

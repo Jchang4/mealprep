@@ -11,15 +11,16 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import GradeIcon from "@material-ui/icons/Grade";
 import Typography from "@material-ui/core/Typography";
 import Row from "components/row";
+import FiveStarRating from "components/five-star-rating";
 import CircularImage from "components/image/circular-image";
 
 const styles = theme => ({
   selected: {
     "& $textContainer": {
-      border: "1px solid #00bcd4",
-      marginTop: -17,
-      paddingLeft: 2 * theme.spacing.unit - 1,
-      paddingRight: 2 * theme.spacing.unit - 1
+      border: `2px solid ${theme.palette.primary.light}`,
+      marginTop: -19,
+      paddingLeft: 2 * theme.spacing.unit - 2,
+      paddingRight: 2 * theme.spacing.unit - 2
     }
   },
   container: {
@@ -28,18 +29,28 @@ const styles = theme => ({
     // replace with react-spring?
     "&:hover": {
       cursor: "pointer",
-      "& $textContainer": {
-        boxShadow: theme.shadows[8]
-      },
       "& $imageContainer": {
         boxShadow: theme.shadows[15],
         marginTop: -25
+      },
+      "& $textContainer": {
+        boxShadow: theme.shadows[8]
       },
       "& $image": {
         height: 225,
         width: 225
       }
     }
+  },
+  imageContainer: {
+    boxShadow: theme.shadows["6"],
+    transition: "box-shadow 150ms ease-out, margin-top 150ms ease-out"
+  },
+  image: {
+    width: 200,
+    height: 200,
+    margin: "0 auto",
+    transition: "height 150ms ease-out, width 150ms ease-out"
   },
   textContainer: {
     borderRadius: theme.shape.borderRadius,
@@ -49,16 +60,6 @@ const styles = theme => ({
     // marginTop: -115,
     marginTop: -15,
     transition: "box-shadow 200ms ease-in"
-  },
-  imageContainer: {
-    boxShadow: theme.shadows["6"],
-    transition: "box-shadow 150ms ease-out, margin-top 150ms ease-out"
-  },
-  image: {
-    margin: "0 auto",
-    height: 200,
-    width: 200,
-    transition: "height 150ms ease-out, width 150ms ease-out"
   },
   title: {
     height: 7 * theme.spacing.unit
@@ -119,7 +120,7 @@ const RecipeCard = ({
         <Typography className={classes.title} variant="title">
           {title}
         </Typography>
-        <Row justifyContent="space-between">
+        <Row justifyContent="space-between" alignItems="center">
           {/* Total cooking time */}
           {hasCookingTime ? (
             <Row>
@@ -127,14 +128,13 @@ const RecipeCard = ({
               <Typography variant="body1">{totalTime}</Typography>
             </Row>
           ) : (
-            <div />
+            <div style={{ width: 45 }} />
           )}
           {/* Source - AllRecipe, BudgetBytes */}
           <Typography variant="body2">{recipeWebsiteSource}</Typography>
           {/* Rating */}
           <Row>
-            <GradeIcon className={classes.icon} fontSize="small" />
-            <Typography variant="body1">{fiveStarRating.toFixed(2)}</Typography>
+            <FiveStarRating rating={fiveStarRating} />
           </Row>
         </Row>
         <Row justifyContent="flex-end" className={classes.selectRecipeButton}>

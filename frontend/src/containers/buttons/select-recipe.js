@@ -28,7 +28,8 @@ const SelectRecipeButton = ({
     color="primary"
     className={className}
     style={style}
-    onClick={() => {
+    onClick={e => {
+      e.stopPropagation();
       const isSelected = selectedRecipeIds.includes(recipeId);
       if (isSelected) {
         unselectRecipeById(recipeId);

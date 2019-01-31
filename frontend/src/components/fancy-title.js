@@ -17,9 +17,11 @@ const FancyTitle = ({
   style,
   children
 }) => (
-  <h1 className={classNames(className, "fancy-title")} style={style}>
-    {children}
-  </h1>
+  <div>
+    <h1 className={classNames(className, "fancy-title")} style={style}>
+      {children}
+    </h1>
+  </div>
 );
 
 export default withStyles(styles)(FancyTitle);

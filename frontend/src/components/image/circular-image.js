@@ -5,15 +5,15 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   circularContainer: {
+    // display: "inline-block",
     borderRadius: "50%",
-    overflow: "hidden"
+    overflow: "hidden",
+    margin: "0 auto"
   },
   image: {
     display: "block",
-    height: 150,
-    width: 150,
-    margin: "0 auto",
-    objectFit: "cover"
+    objectFit: "cover",
+    margin: "0 auto"
   }
 });
 
@@ -36,6 +36,10 @@ const CircularImage = ({
       className={classNames(classes.image, imgClassName)}
       src={src}
       alt={alt}
+      style={{
+        width: Number(size) ? `${size}px` : size,
+        height: Number(size) ? `${size}px` : size
+      }}
     />
   </div>
 );
