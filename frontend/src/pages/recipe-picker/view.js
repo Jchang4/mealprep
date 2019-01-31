@@ -9,13 +9,11 @@ import RecipeSearchBar from "containers/recipe-search-bar";
 import Typography from "@material-ui/core/Typography";
 import RecipeCard from "components/recipe-card";
 import Flex from "components/flex";
+import FancyTitle from "components/fancy-title";
 
 const styles = theme => ({
   pageTitle: {
     marginTop: 0,
-    fontSize: theme.typography.h1.fontSize,
-    lineHeight: theme.typography.h1.lineHeight,
-    letterSpacing: theme.typography.h1.letterSpacing,
     textAlign: "center"
   },
   recipesContainer: {
@@ -23,14 +21,12 @@ const styles = theme => ({
   }
 });
 
-class Recipe extends React.Component {
+class RecipePicker extends React.Component {
   render() {
     const { classes, recipes } = this.props;
     return (
       <div>
-        <h1 className={classNames("fancy-title", classes.pageTitle)}>
-          Recipe Picker
-        </h1>
+        <FancyTitle className={classes.pageTitle}>Recipe Picker</FancyTitle>
         <Typography
           style={{ fontStyle: "italic", textAlign: "center" }}
           variant="body1"
@@ -55,4 +51,4 @@ class Recipe extends React.Component {
   }
 }
 
-export default withStyles(styles)(Recipe);
+export default withStyles(styles)(RecipePicker);

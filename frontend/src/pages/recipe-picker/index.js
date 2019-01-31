@@ -4,11 +4,11 @@ import magicConnect from "app-state/magic-connect";
 import { getRecipes } from "app-state/recipes/selectors";
 
 // View
-import RecipesView from "./view";
+import RecipePickerView from "./view";
 
 export default magicConnect({
   selectors: {
     recipes: getRecipes
   },
   actions: {}
-})(RecipesView);
+})(RecipePickerView);

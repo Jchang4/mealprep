@@ -9,13 +9,16 @@ import Page from "components/page";
 
 // Pages
 // import Home from "./home";
-import Recipes from "./recipes";
+import RecipePicker from "./recipe-picker";
+import RecipeDetails from "./recipe-details";
 
 const AppRouter = () => (
   <Page>
     <Router>
       <Switch>
-        <Route path="/" component={Recipes} />
+        <Route path="/recipe/:recipeId" component={RecipeDetails} />
+        <Route path="/recipe" component={RecipePicker} />
+        <Route path="/" component={RecipePicker} />
         <Redirect to="/" />
       </Switch>
     </Router>

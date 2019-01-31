@@ -72,16 +72,19 @@ const styles = theme => ({
 });
 
 const RecipeCard = ({
+  history,
   selectedRecipeIds,
+  classes,
+  // Props
   recipeId,
   title,
   imgUrl,
   cookingTime: { totalTime },
   fiveStarRating,
-  source: { source: recipeWebsiteSource },
-  classes
+  source: { source: recipeWebsiteSource }
 }: {
   selectedRecipeIds: string[],
+  classes: Object,
   recipeId: string,
   title: string,
   imgUrl?: string,
@@ -91,8 +94,7 @@ const RecipeCard = ({
   fiveStarRating: number,
   source: {
     source: string
-  },
-  classes: Object
+  }
 }) => {
   const hasCookingTime = !!totalTime;
   const isSelected = selectedRecipeIds.includes(recipeId);
@@ -101,6 +103,7 @@ const RecipeCard = ({
       className={classNames(classes.container, {
         [classes.selected]: isSelected
       })}
+      onClick={() => history.push(`/recipe/${btoa(recipeId)}`)}
     >
       <div className={classes.image}>
         <CircularImage
