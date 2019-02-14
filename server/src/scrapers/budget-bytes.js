@@ -24,14 +24,14 @@ exports.getRecipeDetails = async function getRecipeDetails(url) {
   const $ = await getHtml(url);
   return {
     title: getTitle($),
-    imgUrl: getImgUrl($),
+    imageUrl: getImgUrl($),
     ingredients: getIngredients($),
     instructions: getCookingInstructions($),
     cookingTime: getCookingTime($),
     fiveStarRating: getFiveStarRating($),
     source: {
-      recipeUrl: url,
-      source: "BudgetBytes"
+      originalUrl: url,
+      company: "BudgetBytes"
     }
   };
 };

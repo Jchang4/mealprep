@@ -17,13 +17,13 @@ app.get("/recipe", async (req, res) => {
     const recipes = await scraper({ ingredients, numResults, offset });
 
     res.set("Access-Control-Allow-Origin", "*");
-    res.json({
+    return res.json({
       status: 200,
       recipes
     });
   } catch (err) {
     console.log(err);
-    res.json({
+    return res.json({
       status: 500,
       error: err
     });
