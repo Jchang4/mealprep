@@ -15,6 +15,7 @@
     "cheerio": "^1.0.0-rc.2",
     "delay": "^4.1.0",
     "express": "^4.16.4",
+    "mongoose": "^5.4.13",
     "puppeteer": "^1.11.0"
   }
 }

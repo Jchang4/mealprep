@@ -21,7 +21,7 @@ async function staggerNGetRecipesDetails({
   for (let i = 0; i < urls.length; i++) {
     const r = await getRecipeDetails(urls[i]);
     recipes.push(r);
-    console.log(`Scraped ${r.title} from ${r.source.source}`);
+    console.log(`Scraped ${r.title} from ${r.source.company}`);
     if (i < urls.length - 1) {
       await delay(staggerDelay);
     }

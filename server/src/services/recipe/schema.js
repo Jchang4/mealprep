@@ -1,50 +1,50 @@
-
 module.exports = {
   title: {
-    description: 'Title of the recipe',
-    type: String
-    required: true,
+    description: "Title of the recipe",
+    type: String,
+    required: true
   },
   imageUrl: {
-    description: 'Image URL of the recipe / dish',
-    type: String,
+    description: "Image URL of the recipe / dish",
+    type: String
   },
   ingredients: {
-    description: 'List of ingredients',
-    type: String[],
+    description: "List of ingredients",
+    type: [String]
   },
   instructions: {
-    description: 'List of instructions',
-    type: String[],
+    description: "List of instructions",
+    type: [String]
   },
   cookingTime: {
-    description: 'Cooking time in minutes',
+    description: "Cooking time in minutes",
     type: {
       prep: Number,
       cook: Number,
-      total: Number,
+      total: Number
     }
-  }
+  },
   fiveStarRating: Number,
-  notes: String[],
+  notes: [String],
   source: {
     originalUrl: {
-      description: 'Full URL of the recipe',
+      description: "Full URL of the recipe",
       type: String,
-      required: true,
+      required: true
     },
     company: {
-      description: 'Company the recipe was sourced from - i.e. AllRecipe, BudgetBytes',
+      description:
+        "Company the recipe was sourced from - i.e. AllRecipe, BudgetBytes",
       type: String,
-      required: true,
+      required: true
     },
     apiName: {
-      description: 'Specify API name is recipe taken from an API - i.e. Edamam',
-      type: String,
+      description: "Specify API name is recipe taken from an API - i.e. Edamam",
+      type: String
     },
     recipeId: {
-      description: 'Id of the recipe from the website, usually found in URL',
-      type: String,
+      description: "Id of the recipe from the website, usually found in URL",
+      type: String
     }
   }
-}
+};
