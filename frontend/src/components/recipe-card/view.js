@@ -16,10 +16,10 @@ import CircularImage from "components/image/circular-image";
 const styles = theme => ({
   selected: {
     "& $textContainer": {
-      border: `2px solid ${theme.palette.primary.light}`,
-      marginTop: -19,
-      paddingLeft: 2 * theme.spacing.unit - 2,
-      paddingRight: 2 * theme.spacing.unit - 2
+      border: `1px solid ${theme.palette.secondary.light}`,
+      marginTop: -17,
+      paddingLeft: 2 * theme.spacing.unit - 1,
+      paddingRight: 2 * theme.spacing.unit - 1
     }
   },
   container: {
@@ -78,7 +78,7 @@ const RecipeCard = ({
   // Props
   recipeId,
   title,
-  imgUrl,
+  imageUrl,
   cookingTime: { totalTime },
   fiveStarRating,
   source: { source: recipeWebsiteSource }
@@ -87,7 +87,7 @@ const RecipeCard = ({
   classes: Object,
   recipeId: string,
   title: string,
-  imgUrl?: string,
+  imageUrl?: string,
   cookingTime?: {
     totalTime?: string
   },
@@ -109,7 +109,7 @@ const RecipeCard = ({
         <CircularImage
           containerClassName={classes.imageContainer}
           imgClassName={classes.image}
-          src={imgUrl}
+          src={imageUrl}
           alt={title}
         />
       </div>

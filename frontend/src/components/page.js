@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   page: {
+    position: "relative",
     padding: `${3 * theme.spacing.unit}px 0`
   }
 });

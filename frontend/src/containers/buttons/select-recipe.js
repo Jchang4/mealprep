@@ -25,7 +25,7 @@ const SelectRecipeButton = ({
 }) => (
   <Button
     variant="outlined"
-    color="primary"
+    color="secondary"
     className={className}
     style={style}
     onClick={e => {

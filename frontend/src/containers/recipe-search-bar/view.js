@@ -41,7 +41,11 @@ class RecipeSearchBar extends React.Component {
           onKeyDown={e => this.handleRecipeSearchOnEnter(e)}
           className={classes.textField}
           label={textFieldLabel}
+          placeholder="i.e. chicken, pesto"
           variant="outlined"
+          InputLabelProps={{
+            shrink: true
+          }}
         />
       </div>
     );

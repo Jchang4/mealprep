@@ -6,20 +6,16 @@ import { ADD_N_RECIPES } from "./constants";
 
 export function getRecipesByIngredients(ingredients, numResults = 7) {
   return async (dispatch, _) => {
-    const requests = [];
-    for (let i = 0; i < numResults; i += 2) {
-      requests.push(
-        getRecipesByIngredientsFromApi({
-          ingredients,
-          numResults: 2,
-          offset: i
-        })
-      );
-      await delay(250);
-    }
-    return P.map(requests, recipes =>
-      dispatch({ type: ADD_N_RECIPES, payload: recipes })
-    );
+    const recipes = await getRecipesByIngredientsFromApi({
+      ingredients,
+      numResults,
+      offset: 0
+    });
+
+    return dispatch({
+      type: ADD_N_RECIPES,
+      payload: recipes
+    });
   };
 }
 

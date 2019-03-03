@@ -9,7 +9,7 @@ export async function getRecipesByIngredientsFromApi({
 }) {
   const queryString = ingredients.map(i => `i=${i}`).join("&");
   const res = await axios.get(
-    `${SERVER_URL}/recipe?${queryString}&r=${numResults}&offset=${offset}`
+    `${SERVER_URL}/recipeApi?${queryString}&r=${numResults}&offset=${offset}`
   );
   return res.data.recipes;
 }

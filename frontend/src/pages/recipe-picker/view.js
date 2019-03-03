@@ -17,7 +17,10 @@ const styles = theme => ({
     textAlign: "center"
   },
   recipesContainer: {
-    marginTop: theme.spacing.unit * 2
+    maxWidth: 1400,
+    marginTop: theme.spacing.unit * 2,
+    marginLeft: "auto",
+    marginRight: "auto"
   }
 });
 

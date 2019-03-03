@@ -1,7 +1,7 @@
 export default {
   "https://www.budgetbytes.com/southwest-steak-bowls/": {
     title: "Southwest Steak Bowls",
-    imgUrl:
+    imageUrl:
       "https://www.budgetbytes.com/wp-content/uploads/2013/08/Southwest-Steak-Bowls-close-1-380x380.jpg",
     ingredients: [
       "3/4 - 1 lb flank or skirt steak",
@@ -41,7 +41,8 @@ export default {
   },
   "https://www.allrecipes.com/recipe/103535/blackened-tuna-steaks-with-mango-salsa/": {
     title: "Blackened Tuna Steaks with Mango Salsa",
-    imgUrl: "https://images.media-allrecipes.com/userphotos/560x315/572557.jpg",
+    imageUrl:
+      "https://images.media-allrecipes.com/userphotos/560x315/572557.jpg",
     ingredients: [
       "2 tablespoons olive oil",
       "2 tablespoons lime juice",
@@ -89,7 +90,7 @@ export default {
 
   "https://www.allrecipes.com/recipe/223042/chicken-parmesan/": {
     title: "Chicken Parmesan",
-    imgUrl:
+    imageUrl:
       "https://images.media-allrecipes.com/userphotos/560x315/4572704.jpg",
     ingredients: [
       "4 skinless, boneless chicken breast halves",
@@ -136,7 +137,7 @@ export default {
   },
   "https://www.allrecipes.com/recipe/9044/tomato-chicken-parmesan/": {
     title: "Tomato Chicken Parmesan",
-    imgUrl:
+    imageUrl:
       "https://images.media-allrecipes.com/userphotos/560x315/2467826.jpg",
     ingredients: [
       "2 eggs, beaten",
@@ -171,7 +172,7 @@ export default {
   },
   "https://www.allrecipes.com/recipe/15003/oven-fried-parmesan-chicken/": {
     title: "Oven Fried Parmesan Chicken",
-    imgUrl:
+    imageUrl:
       "https://images.media-allrecipes.com/userphotos/560x315/1307559.jpg",
     ingredients: [
       "1 clove crushed garlic",
@@ -206,7 +207,7 @@ export default {
   },
   "https://www.allrecipes.com/recipe/229099/breaded-parmesan-ranch-chicken/": {
     title: "Breaded Parmesan Ranch Chicken",
-    imgUrl:
+    imageUrl:
       "https://images.media-allrecipes.com/userphotos/560x315/4577034.jpg",
     ingredients: [
       "3/4 cup crushed corn flakes",
@@ -238,7 +239,7 @@ export default {
   },
   "https://www.budgetbytes.com/parmesan-pepper-kale-pasta/": {
     title: "Parmesan & Pepper Kale Pasta",
-    imgUrl:
+    imageUrl:
       "https://www.budgetbytes.com/wp-content/uploads/2015/03/Parmesan-Pepper-Kale-Pasta-bowl-380x380.jpg",
     ingredients: [
       "2 Tbsp butter",
@@ -271,7 +272,7 @@ export default {
   },
   "https://www.budgetbytes.com/creamy-tuna-pasta-with-peas-and-parmesan/": {
     title: "Creamy Tuna Pasta with Peas and Parmesan",
-    imgUrl:
+    imageUrl:
       "https://www.budgetbytes.com/wp-content/uploads/2018/06/Creamy-Tuna-Pasta-with-Peas-and-Parmesan-bowl-380x380.jpg",
     ingredients: [
       "8 oz. pasta",
@@ -304,7 +305,7 @@ export default {
   },
   "https://www.budgetbytes.com/quick-garlic-parmesan-broccoli/": {
     title: "Quick Garlic Parmesan Broccoli",
-    imgUrl:
+    imageUrl:
       "https://www.budgetbytes.com/wp-content/uploads/2015/12/Quick-Garlic-Parmesan-Broccoli-above-1-380x380.jpg",
     ingredients: [
       "2  crowns broccoli (approx. 1 lb.)",
@@ -334,7 +335,7 @@ export default {
   },
   "https://www.budgetbytes.com/garlic-parmesan-kale-pasta/": {
     title: "Garlic Parmesan Kale Pasta",
-    imgUrl:
+    imageUrl:
       "https://www.budgetbytes.com/wp-content/uploads/2013/10/Garlic-Parmesan-Kale-Pasta-bowl-380x380.jpg",
     ingredients: [
       "1 bunch 1/2 lb kale",

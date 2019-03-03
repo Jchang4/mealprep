@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import update from "immutability-helper";
 
 import {
@@ -12,13 +13,7 @@ import DUMMY_STATE from "./DUMMY_DATA";
 const INITIAL_RECIPE_STATE = DUMMY_STATE;
 
 function listOfRecipesToObject(recipes) {
-  return recipes.reduce(
-    (acc, r) =>
-      Object.assign(acc, {
-        [r.source.recipeUrl]: r
-      }),
-    {}
-  );
+  return R.indexBy(R.prop("_id"), recipes);
 }
 
 function recipeReducer(state = INITIAL_RECIPE_STATE, action) {

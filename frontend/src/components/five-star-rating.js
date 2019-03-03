@@ -22,13 +22,14 @@ const FiveStarRating = ({
 }: {
   rating: number,
   classes: Object
-}) => (
-  <Flex>
-    <GradeIcon className={classes.icon} fontSize="small" />
-    <Typography variant="subheading" className={classes.text}>
-      {rating.toFixed(2)}
-    </Typography>
-  </Flex>
-);
+}) =>
+  rating ? (
+    <Flex>
+      <GradeIcon className={classes.icon} fontSize="small" />
+      <Typography variant="subheading" className={classes.text}>
+        {rating.toFixed(2)}
+      </Typography>
+    </Flex>
+  ) : null;
 
 export default withStyles(styles)(FiveStarRating);
