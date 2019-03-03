@@ -8,6 +8,12 @@ const RecipeModel = require("./services/recipe");
 const mongoConnection = require("./lib/mongo-connection");
 const { asArray } = require("./helpers");
 
+// Set CORS policy
+app.use((req, res, next) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/recipe", async (req, res) => {
   const ingredients = req.query.i;
   const numResults = Number(req.query.r) || 5;
@@ -20,7 +26,6 @@ app.get("/recipe", async (req, res) => {
   try {
     const recipes = await scraper({ ingredients, numResults, offset });
 
-    res.set("Access-Control-Allow-Origin", "*");
     return res.json({
       status: 200,
       recipes
@@ -46,7 +51,8 @@ app.get("/recipeApi", async (req, res) => {
   try {
     mongoConnection();
     const recipes = await RecipeModel.find({
-      ingredients: { $in: ingredients.map(i => new RegExp(i, "g")) }
+      ingredients: { $in: ingredients.map(i => new RegExp(i, "g")) },
+      imageUrl: { $exists: true, $ne: null }
     })
       .skip(offset)
       .limit(numResults)

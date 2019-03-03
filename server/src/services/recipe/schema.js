@@ -2,7 +2,8 @@ module.exports = {
   title: {
     description: "Title of the recipe",
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   imageUrl: {
     description: "Image URL of the recipe / dish",
@@ -10,7 +11,8 @@ module.exports = {
   },
   ingredients: {
     description: "List of ingredients",
-    type: [String]
+    type: [String],
+    index: true
   },
   instructions: {
     description: "List of instructions",
